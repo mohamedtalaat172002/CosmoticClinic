@@ -23,7 +23,7 @@ namespace Clinic.Application.Dependencies
             });
 
             services.AddValidatorsFromAssembly(assembly);
-
+            //services.AddValidatorsFromAssembly(typeof(AddArticleCommandValidator).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             return services;

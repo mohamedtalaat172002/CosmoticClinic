@@ -6,7 +6,7 @@ namespace Clinic.Domain.Entities.artical
     {
         public string Title { get; private set; } = string.Empty;
 
-        public string Slug { get; private set; } = string.Empty;
+        public string Slug { get; set; } = string.Empty;
 
         public string Summary { get; private set; } = string.Empty;
 

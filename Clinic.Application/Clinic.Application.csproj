@@ -17,10 +17,6 @@
 
   <ItemGroup>
     <Folder Include="DTOS\" />
-    <Folder Include="Features\Articles\Commands\Models\" />
-    <Folder Include="Features\Articles\Commands\Validaitons\" />
-    <Folder Include="Features\Articles\Commands\Handlers\" />
-    <Folder Include="Mappings\ArticleMapping\ArticleCommandMapping\" />
   </ItemGroup>
 
   <ItemGroup>

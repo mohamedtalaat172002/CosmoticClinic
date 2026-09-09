@@ -1,4 +1,5 @@
 ﻿using Clinic.Api.Common;
+using Clinic.Application.Features.Articles.Commands.Models;
 using Clinic.Application.Features.Articles.Queries.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,26 +28,26 @@ namespace Clinic.Api.Controllers
             return Ok(result);
         }
 
-        //[HttpPut("Update-Article")]
-        //public virtual async Task<IActionResult> Update([FromBody] UpdateArticleCommand command)
-        //{
-        //    return Ok(await _mediator.Send(command));
-        //}
 
-        //[HttpPut("Delete-Article")]
-        //public virtual async Task<IActionResult> Delete([FromBody] DeleteArticleCommand command)
-        //{
-        //    return Ok(await _mediator.Send(command));
-        //}
+        [HttpPut("Update-Article")]
+        public virtual async Task<IActionResult> Update([FromBody] UpdateArticleCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+        [HttpDelete("Delete-Article")]
+        public virtual async Task<IActionResult> Delete([FromBody] DeleteArticleCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
 
 
 
-        //[HttpPost("Product-Search")]
-        //public async Task<IActionResult> Search([FromBody] GetAllProductsQuery query)
-        //{
-        //    query ??= new GetAllProductsQuery();
-        //    var result = await _mediator.Send(query);
-        //    return Ok(result);
-        //}
+        [HttpPost("Add-Article")]
+        public async Task<IActionResult> AddArticle([FromBody] AddArticleCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Clinic.Application.Features.Articles.Queries.Result
 {
-    internal sealed class SingleArticleDto
+    public sealed class SingleArticleDto
     {
         public Guid Id { get; private set; }
         public string Title { get; private set; } = string.Empty;

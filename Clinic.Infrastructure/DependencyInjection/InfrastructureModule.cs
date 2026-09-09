@@ -8,6 +8,7 @@ using Clinic.Infrastructure.Persistence.Repositories;
 using Clinic.Infrastructure.Persistence.Repositories.ArticleRepo;
 using Clinic.Infrastructure.Persistence.Repositories.ProductRepo;
 using Clinic.Infrastructure.Services;
+using Clinic.Infrastructure.Services.ArticleService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,11 +27,12 @@ namespace Clinic.Infrastructure.DependencyInjection
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IArticleReadRepository, ArticleReadRepository>();
-
+            services.AddScoped<IArticleWriteRepository, ArticleWriteRepository>();
             services.AddScoped(
                     typeof(IGenericRepository<,>),
                     typeof(GenericRepository<,>)
                 );
+            services.AddScoped<ISlugService, SlugService>();
             return services;
 
         }
