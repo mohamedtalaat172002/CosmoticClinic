@@ -20,8 +20,8 @@ namespace Clinic.Application.Features.Articles.Commands.Validaitons
                 .WithMessage("Summary is required.")
                 .MinimumLength(100)
                 .WithMessage("Summary must be at least 100 characters.")
-                .MaximumLength(350)
-                .WithMessage("Summary cannot exceed 350 characters.");
+                .MaximumLength(200)
+                .WithMessage("Summary cannot exceed 200 characters.");
 
             RuleFor(x => x.Content)
                 .NotEmpty()

@@ -6,5 +6,6 @@ namespace Clinic.Application.Interfaces.Repositories.IArticalRepo
 {
     public interface IArticleReadRepository : IReadRepository<Article, ArticleSearchCriteria, Guid>
     {
+        public Task<Article?> GetBySlugAsync(string slug);
     }
 }

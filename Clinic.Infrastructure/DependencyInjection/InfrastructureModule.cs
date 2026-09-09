@@ -8,7 +8,6 @@ using Clinic.Infrastructure.Persistence.Repositories;
 using Clinic.Infrastructure.Persistence.Repositories.ArticleRepo;
 using Clinic.Infrastructure.Persistence.Repositories.ProductRepo;
 using Clinic.Infrastructure.Services;
-using Clinic.Infrastructure.Services.ArticleService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

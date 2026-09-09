@@ -1,4 +1,5 @@
 ﻿using Clinic.Api.Common;
+using Clinic.Application.Common;
 using Clinic.Application.Features.Articles.Commands.Models;
 using Clinic.Application.Features.Articles.Queries.Models;
 using MediatR;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class ArticlesController : ApplicationControllerBase
     {
@@ -14,39 +14,45 @@ namespace Clinic.Api.Controllers
         {
         }
 
-        [HttpGet("Get-Article-ById")]
-        public async Task<IActionResult> GetArticleByIdASync([FromQuery] GetArticleByIdQuery query)
+        [HttpGet(Router.ArticleRouting.GetByID)]
+        public async Task<IActionResult> GetArticleByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(new GetArticleByIdQuery(id), cancellationToken);
             return Ok(result);
         }
 
-        [HttpGet("Get-All-Article")]
-        public async Task<IActionResult> GetAllArticlesAsync([FromQuery] GetAllArticlesQuery query)
+        [HttpGet(Router.ArticleRouting.GetBySlug)]
+        public async Task<IActionResult> GetArticleBySlugAsync(string slug, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(new GetArticleBySlugQuery(slug), cancellationToken);
             return Ok(result);
         }
 
-
-        [HttpPut("Update-Article")]
-        public virtual async Task<IActionResult> Update([FromBody] UpdateArticleCommand command)
+        [HttpGet(Router.ArticleRouting.List)]
+        public async Task<IActionResult> GetAllArticlesAsync([FromQuery] GetAllArticlesQuery query, CancellationToken cancellationToken)
         {
-            return Ok(await _mediator.Send(command));
+            var result = await _mediator.Send(query, cancellationToken);
+            return Ok(result);
         }
 
-        [HttpDelete("Delete-Article")]
-        public virtual async Task<IActionResult> Delete([FromBody] DeleteArticleCommand command)
+        [HttpPut(Router.ArticleRouting.Edit)]
+        public virtual async Task<IActionResult> Update(Guid id, [FromBody] UpdateArticleCommand command, CancellationToken cancellationToken)
         {
-            return Ok(await _mediator.Send(command));
+            var result = await _mediator.Send(command with { Id = id }, cancellationToken);
+            return Ok(result);
         }
 
-
-
-        [HttpPost("Add-Article")]
-        public async Task<IActionResult> AddArticle([FromBody] AddArticleCommand command)
+        [HttpDelete(Router.ArticleRouting.Delete)]
+        public virtual async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new DeleteArticleCommand(id), cancellationToken);
+            return Ok(result);
+        }
+
+        [HttpPost(Router.ArticleRouting.Create)]
+        public async Task<IActionResult> AddArticle([FromBody] AddArticleCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(command, cancellationToken);
             return Ok(result);
         }
     }

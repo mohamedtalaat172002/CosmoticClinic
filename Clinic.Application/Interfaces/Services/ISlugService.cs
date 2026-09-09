@@ -2,6 +2,7 @@
 {
     public interface ISlugService
     {
-        string GenerateSlug(string text);
+        string GenerateSlug(string text, Guid id);
+
     }
 }

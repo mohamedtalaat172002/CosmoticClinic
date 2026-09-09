@@ -11,7 +11,7 @@ namespace Clinic.Infrastructure.Persistence.Repositories
         where TEntity : BaseEntity<TId>
         where TEntitySC : BaseSearchCriteria
     {
-        private readonly ApplicationDbContext _context;
+        protected readonly ApplicationDbContext _context;
 
         public ReadRepository(ApplicationDbContext context)
         {

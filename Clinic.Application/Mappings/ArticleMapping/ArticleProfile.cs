@@ -9,6 +9,7 @@ namespace Clinic.Application.Mappings.ArticleMapping
             GetSingleArticleByIDMapping();
             GetAllArticlesMapping();
             AddArticleMapping();
+            UpdateArticleMapping();
         }
     }
 }

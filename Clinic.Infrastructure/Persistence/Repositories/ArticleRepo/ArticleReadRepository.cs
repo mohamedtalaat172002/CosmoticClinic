@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clinic.Infrastructure.Persistence.Repositories.ArticleRepo
 {
-    public class ArticleReadRepository : ReadRepository<Article, ArticleSearchCriteria, Guid>, IArticleReadRepository
+    public class ArticleReadRepository : ReadRepository<Article, ArticleSearchCriteria, Guid>
+        , IArticleReadRepository
     {
         public ArticleReadRepository(ApplicationDbContext context) : base(context)
         {
@@ -31,5 +32,14 @@ namespace Clinic.Infrastructure.Persistence.Repositories.ArticleRepo
                 .WhereIf(criteria.Status.HasValue,
                     a => a.Status == criteria.Status.Value);
         }
+
+        public async Task<Article?> GetBySlugAsync(string slug)
+        {
+
+            return await _context.Set<Article>()
+                      .AsNoTracking()
+                      .FirstOrDefaultAsync(a => a.Slug == slug);
+        }
+
     }
 }

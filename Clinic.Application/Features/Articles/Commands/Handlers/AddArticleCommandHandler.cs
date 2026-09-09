@@ -27,7 +27,7 @@ namespace Clinic.Application.Features.Articles.Commands.Handlers
         public async Task<Result<SingleArticleDto>> Handle(AddArticleCommand request, CancellationToken cancellationToken)
         {
             var article = _mapper.Map<Article>(request);
-            article.Slug = _slugService.GenerateSlug(request.Title);
+            article.Slug = _slugService.GenerateSlug(request.Title, article.Id);
             await _articleWriteRepository.AddAsync(article);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

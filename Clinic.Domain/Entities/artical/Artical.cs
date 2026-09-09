@@ -1,24 +1,27 @@
-﻿using Clinic.Domain.Common;
-
+﻿using Clinic.Domain.BaseEntity;
 namespace Clinic.Domain.Entities.artical
 {
-    public sealed class Article : BaseEntity<Guid>
+    public sealed class Article : SluggableBaseEntity<Guid>
     {
-        public string Title { get; private set; } = string.Empty;
+        public Article()
+        {
+            Id = Guid.NewGuid();
+        }
+        public string Title { get; set; } = string.Empty;
 
         public string Slug { get; set; } = string.Empty;
 
-        public string Summary { get; private set; } = string.Empty;
+        public string Summary { get; set; } = string.Empty;
 
-        public string Content { get; private set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
 
-        public string? FeaturedImageUrl { get; private set; }
+        public string? FeaturedImageUrl { get; set; }
 
-        public ArticleStatus Status { get; private set; }
+        public ArticleStatus Status { get; set; }
 
-        public DateTime? PublishedAt { get; private set; }
+        public DateTime? PublishedAt { get; set; }
 
-        public Guid WriterId { get; private set; }
+        public Guid WriterId { get; set; }
 
 
     }
