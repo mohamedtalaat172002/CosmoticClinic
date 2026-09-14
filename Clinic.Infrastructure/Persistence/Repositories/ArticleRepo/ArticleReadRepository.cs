@@ -26,8 +26,8 @@ namespace Clinic.Infrastructure.Persistence.Repositories.ArticleRepo
                          EF.Functions.Like(a.Summary, $"%{search}%") ||
                          EF.Functions.Like(a.Content, $"%{search}%"))
 
-                .WhereIf(criteria.WriterId.HasValue,
-                    a => a.WriterId == criteria.WriterId.Value)
+                //.WhereIf(criteria.WriterId.HasValue,
+                //    a => a. == criteria.WriterId.Value)
 
                 .WhereIf(criteria.Status.HasValue,
                     a => a.Status == criteria.Status.Value);

@@ -40,8 +40,10 @@ namespace Clinic.Infrastructure.Persistence.Configurations
 
             builder.Property(a => a.PublishedAt);
 
-            builder.Property(a => a.WriterId)
-                .IsRequired();
+            builder.HasOne(a => a.Treatment)
+     .WithMany(t => t.Articles)
+     .HasForeignKey(a => a.TreatmentId)
+     .OnDelete(DeleteBehavior.SetNull);
 
 
         }

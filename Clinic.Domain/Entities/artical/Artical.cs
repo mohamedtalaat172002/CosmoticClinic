@@ -1,4 +1,5 @@
 ﻿using Clinic.Domain.BaseEntity;
+using Clinic.Domain.Entities.treatment;
 namespace Clinic.Domain.Entities.artical
 {
     public sealed class Article : SluggableBaseEntity<Guid>
@@ -21,7 +22,11 @@ namespace Clinic.Domain.Entities.artical
 
         public DateTime? PublishedAt { get; set; }
 
-        public Guid WriterId { get; set; }
+        //public Guid WriterId { get; set; }
+
+        public Guid? TreatmentId { get; set; }
+
+        public Treatment? Treatment { get; set; }
 
 
     }
