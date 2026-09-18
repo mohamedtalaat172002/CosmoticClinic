@@ -40,5 +40,11 @@
             public const string Edit = Prefix + SingleRoute;
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class ClinicSettingsRouting
+        {
+            public const string Prefix = Rule + "ClinicSettings";
+            public const string Get = Prefix + "/Get";
+            public const string Edit = Prefix + "/Edit";
+        }
     }
 }
