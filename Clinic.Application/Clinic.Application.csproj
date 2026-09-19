@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOS\**" />
+    <EmbeddedResource Remove="DTOS\**" />
+    <None Remove="DTOS\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
@@ -14,10 +20,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.11" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.15" />
+    <PackageReference Include="Serilog" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOS\" />
     <Folder Include="Features\Treatments\Commands\Validators\" />
     <Folder Include="Features\Treatments\Commands\Handlers\" />
   </ItemGroup>

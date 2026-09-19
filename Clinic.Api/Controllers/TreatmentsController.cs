@@ -3,6 +3,7 @@ using Clinic.Application.Common;
 using Clinic.Application.Features.Treatments.Commands.Models;
 using Clinic.Application.Features.Treatments.Queries.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic.Api.Controllers
@@ -41,21 +42,21 @@ namespace Clinic.Api.Controllers
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }
-
+        [Authorize(Roles = ApplicationRoles.Admin)]
         [HttpPut(Router.TreatmentRouting.Edit)]
         public virtual async Task<IActionResult> Update(Guid id, [FromBody] UpdateTreatmentCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command with { Id = id }, cancellationToken);
             return Ok(result);
         }
-
+        [Authorize(Roles = ApplicationRoles.Admin)]
         [HttpDelete(Router.TreatmentRouting.Delete)]
         public virtual async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new DeleteTreatmentCommand(id), cancellationToken);
             return Ok(result);
         }
-
+        [Authorize(Roles = ApplicationRoles.Admin)]
         [HttpPost(Router.TreatmentRouting.Create)]
         public async Task<IActionResult> AddTreatment([FromBody] AddTreatmentCommand command, CancellationToken cancellationToken)
         {

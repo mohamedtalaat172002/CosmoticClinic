@@ -1,7 +1,9 @@
+using Clinic.Api.Extensions;
 using Clinic.Api.Filters;
 using Clinic.Application.Dependencies;
 using Clinic.Infrastructure.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ResultActionFilter>();
 });
+
+builder.Host.UseSerilog((context, configuration) =>
+configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services
     .AddApplicationDependencies()
@@ -55,6 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRequestContextLogging();
+app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 

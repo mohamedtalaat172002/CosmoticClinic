@@ -3,6 +3,7 @@ using Clinic.Application.Common;
 using Clinic.Application.Features.Articles.Commands.Models;
 using Clinic.Application.Features.Articles.Queries.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic.Api.Controllers
@@ -27,21 +28,21 @@ namespace Clinic.Api.Controllers
             var result = await _mediator.Send(new GetArticleBySlugQuery(slug), cancellationToken);
             return Ok(result);
         }
-
+        [Authorize(Roles = ApplicationRoles.Admin)]
         [HttpGet(Router.ArticleRouting.List)]
         public async Task<IActionResult> GetAllArticlesAsync([FromQuery] GetAllArticlesQuery query, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }
-
+        [Authorize(Roles = ApplicationRoles.Admin)]
         [HttpPut(Router.ArticleRouting.Edit)]
         public virtual async Task<IActionResult> Update(Guid id, [FromBody] UpdateArticleCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command with { Id = id }, cancellationToken);
             return Ok(result);
         }
-
+        [Authorize(Roles = ApplicationRoles.Admin)]
         [HttpDelete(Router.ArticleRouting.Delete)]
         public virtual async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {

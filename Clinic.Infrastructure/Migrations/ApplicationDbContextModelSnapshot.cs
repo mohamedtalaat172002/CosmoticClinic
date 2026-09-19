@@ -303,7 +303,21 @@ namespace Clinic.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClinicSettings", (string)null);
+                    b.ToTable("ClinicSettings", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_ClinicSettings_SingleRow", "[Id] = '11111111-1111-1111-1111-111111111111'");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            Address = "Clinic Address",
+                            ClinicName = "Clinic Name",
+                            CreatedAt = new DateTime(2026, 9, 18, 16, 38, 22, 826, DateTimeKind.Utc).AddTicks(1280),
+                            DoctorName = "Doctor Name",
+                            IsDeleted = false
+                        });
                 });
 
             modelBuilder.Entity("Clinic.Domain.Entities.consultation.Consultation", b =>

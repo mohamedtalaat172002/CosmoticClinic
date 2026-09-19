@@ -3,10 +3,12 @@ using Clinic.Application.Common;
 using Clinic.Application.Features.ClinicSetting.Commands.Models;
 using Clinic.Application.Features.ClinicSetting.Queries.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic.Api.Controllers
 {
+    [Authorize(Roles = ApplicationRoles.Admin)]
     [ApiController]
     public class ClinicSettingsController : ApplicationControllerBase
     {

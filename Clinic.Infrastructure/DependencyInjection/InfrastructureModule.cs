@@ -27,16 +27,19 @@ namespace Clinic.Infrastructure.DependencyInjection
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IIdentityService, IdentityServies>();
+
             services.AddScoped<IFileService, FileService>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+
             services.AddScoped<IArticleReadRepository, ArticleReadRepository>();
-            services.AddScoped<IArticleWriteRepository, ArticleWriteRepository>();
-            services.AddScoped(
-                    typeof(IGenericRepository<,>),
-                    typeof(GenericRepository<,>)
-                );
+            services.AddScoped<IArticleWriteRepository, ArticleWriteRepository>()
+                ;
+            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+
             services.AddScoped<ITreatmentReadRepository, TreatmentReadRepository>();
             services.AddScoped<ITreatmentWriteRepository, TreatmentWriteRepository>();
 
@@ -50,5 +53,6 @@ namespace Clinic.Infrastructure.DependencyInjection
             return services;
 
         }
+
     }
 }
