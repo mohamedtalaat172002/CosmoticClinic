@@ -1,5 +1,4 @@
-﻿using Clinic.Application.Common;
-using Clinic.Application.Common.ResponseFormat;
+﻿using Clinic.Application.Common.ResponseFormat;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
