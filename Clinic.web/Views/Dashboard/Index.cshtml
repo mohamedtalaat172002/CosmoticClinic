@@ -1,0 +1,206 @@
+```cshtml
+@using Clinic.Application.Features.ClinicSetting.Queries.Result
+@model ClinicSettingDto
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_DashboardLayout";
+}
+
+<div class="container-fluid overflow-hidden">
+
+    <div class="row mb-4 align-items-center">
+        <div class="col">
+            <h4 class="mb-1 fw-semibold">Clinic Overview</h4>
+            <p class="mb-0 text-muted">Welcome back, @User.Identity?.Name</p>
+        </div>
+
+        <div class="col-auto">
+            <a asp-action="Settings"
+               class="btn btn-primary d-flex align-items-center gap-2">
+                <iconify-icon icon="solar:pen-line-duotone"></iconify-icon>
+                Edit Settings
+            </a>
+        </div>
+    </div>
+
+    @if (Model is null)
+    {
+        <div class="alert alert-warning d-flex align-items-center gap-3" role="alert">
+            <iconify-icon icon="solar:danger-circle-line-duotone" class="fs-6"></iconify-icon>
+            <div>
+                Clinic settings have not been configured yet.
+                <a asp-action="Settings" class="alert-link ms-1">
+                    Configure now →
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4 mb-4">
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card shadow-none border h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-pill bg-primary-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
+                                <iconify-icon icon="solar:building-line-duotone"
+                                              class="fs-7 text-primary"></iconify-icon>
+                            </div>
+
+                            <span class="fs-3 text-muted fw-medium">Clinic</span>
+                        </div>
+
+                        <h5 class="fw-semibold mb-1">
+                            @(Model.ClinicName ?? "—")
+                        </h5>
+
+                        <p class="text-muted mb-0 fs-3">
+                            @(Model.Specialization ?? "No specialization set")
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card shadow-none border h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-pill bg-success-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
+                                <iconify-icon icon="solar:user-rounded-line-duotone"
+                                              class="fs-7 text-success"></iconify-icon>
+                            </div>
+
+                            <span class="fs-3 text-muted fw-medium">Doctor</span>
+                        </div>
+
+                        <h5 class="fw-semibold mb-1">
+                            @Model.DoctorName
+                        </h5>
+
+                        <p class="text-muted mb-0 fs-3">
+                            @(Model.Address ?? "—")
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card shadow-none border h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-pill bg-warning-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
+                                <iconify-icon icon="solar:phone-line-duotone"
+                                              class="fs-7 text-warning"></iconify-icon>
+                            </div>
+
+                            <span class="fs-3 text-muted fw-medium">Contact</span>
+                        </div>
+
+                        <h5 class="fw-semibold mb-1">
+                            @(Model.WhatsAppNumber ?? "—")
+                        </h5>
+
+                        <p class="text-muted mb-0 fs-3">
+                            @(Model.Email ?? "No email set")
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card shadow-none border h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-pill bg-secondary-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
+                                <iconify-icon icon="solar:share-circle-line-duotone"
+                                              class="fs-7 text-secondary"></iconify-icon>
+                            </div>
+
+                            <span class="fs-3 text-muted fw-medium">Social</span>
+                        </div>
+
+                        <div class="d-flex gap-3 mt-2 flex-wrap">
+
+                            @if (!string.IsNullOrWhiteSpace(Model.FacebookUrl))
+                            {
+                                <a href="@Model.FacebookUrl"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="btn btn-sm btn-light d-flex align-items-center gap-1">
+                                    <iconify-icon icon="ri:facebook-line"></iconify-icon>
+                                    Facebook
+                                </a>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.InstagramUrl))
+                            {
+                                <a href="@Model.InstagramUrl"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="btn btn-sm btn-light d-flex align-items-center gap-1">
+                                    <iconify-icon icon="ri:instagram-line"></iconify-icon>
+                                    Instagram
+                                </a>
+                            }
+
+                            @if (string.IsNullOrWhiteSpace(Model.FacebookUrl) &&
+                                                    string.IsNullOrWhiteSpace(Model.InstagramUrl))
+                            {
+                                <span class="text-muted fs-3">
+                                    No social links set
+                                </span>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row g-4">
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div class="col-lg-6">
+                    <div class="card shadow-none border h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold mb-3">
+                                <iconify-icon icon="solar:file-text-line-duotone"
+                                              class="me-2 text-primary"></iconify-icon>
+                                Description
+                            </h5>
+
+                            <p class="mb-0 text-muted">
+                                @Model.Description
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.HeroImageUrl))
+            {
+                <div class="col-lg-6">
+                    <div class="card shadow-none border h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold mb-3">
+                                <iconify-icon icon="solar:gallery-line-duotone"
+                                              class="me-2 text-primary"></iconify-icon>
+                                Hero Image
+                            </h5>
+
+                            <img src="@Model.HeroImageUrl"
+                                 alt="Hero image"
+                                 class="img-fluid rounded"
+                                 style="max-height:220px;object-fit:cover;width:100%;" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+</div>

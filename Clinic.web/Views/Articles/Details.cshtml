@@ -1,0 +1,25 @@
+@using Clinic.Application.Features.Articles.Queries.Result
+@model SingleArticleDto
+
+@{ ViewData["Title"] = Model.Title; }
+
+<section class="page-hero">
+    <div class="container text-center">
+        <p class="text-uppercase text-primary fw-bold">Clinic journal</p>
+        <h1>@Model.Title</h1>
+        <p class="lead">@Model.Summary</p>
+    </div>
+</section>
+
+<section class="section">
+    <article class="container" style="max-width: 850px;">
+        @if (!string.IsNullOrWhiteSpace(Model.FeaturedImageUrl))
+        {
+            <img class="img-fluid rounded-4 mb-5" src="@Model.FeaturedImageUrl" alt="@Model.Title" />
+        }
+        <div class="detail-content">@Model.Content</div>
+        <a asp-action="Index" class="read-more d-inline-block mt-5">
+            <i class="bi bi-arrow-left"></i> All articles
+        </a>
+    </article>
+</section>

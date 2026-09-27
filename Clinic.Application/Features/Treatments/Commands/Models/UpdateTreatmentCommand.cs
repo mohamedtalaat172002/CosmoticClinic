@@ -9,5 +9,5 @@ namespace Clinic.Application.Features.Treatments.Commands.Models
     string Name,
     string Description,
     string? ImageUrl
-) : IRequest<Result<UpdateSingleTreatmentDto>>;
+) : IRequest<Result<UpdateCreateSingleTreatmentDto>>;
 }

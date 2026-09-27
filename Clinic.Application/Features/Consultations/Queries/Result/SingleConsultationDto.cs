@@ -9,7 +9,7 @@ namespace Clinic.Application.Features.Consultations.Queries.Result
 
         public string PhoneNumber { get; set; } = null!;
 
-        //public string? Message { get; set; }
+        public string? Message { get; set; }
 
         public ConsultationStatus Status { get; set; }
     }

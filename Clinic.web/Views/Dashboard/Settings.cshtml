@@ -1,0 +1,165 @@
+@using Clinic.Application.Features.ClinicSetting.Commands.Models
+@model UpdateClinicSettingModel
+@{
+    ViewData["Title"] = "Clinic Settings";
+    Layout = "_DashboardLayout";
+}
+
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h4 class="mb-1 fw-semibold">Clinic Settings</h4>
+        <p class="mb-0 text-muted">Update your clinic's public information.</p>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Index" class="btn btn-light d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:arrow-left-line-duotone"></iconify-icon>
+            Back to Overview
+        </a>
+    </div>
+</div>
+
+<form asp-action="Settings" method="post" novalidate>
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
+
+    <div class="row g-4">
+
+        @* ── Clinic Info ───────────────────────────────────────────── *@
+        <div class="col-lg-6">
+            <div class="card shadow-none border h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold mb-4">
+                        <iconify-icon icon="solar:building-line-duotone" class="me-2 text-primary"></iconify-icon>
+                        Clinic Info
+                    </h5>
+
+                    <div class="mb-3">
+                        <label asp-for="ClinicName" class="form-label fw-medium">Clinic Name</label>
+                        <input asp-for="ClinicName" class="form-control" placeholder="e.g. Glow Cosmetic Clinic" />
+                        <span asp-validation-for="ClinicName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DoctorName" class="form-label fw-medium">
+                            Doctor Name <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="DoctorName" class="form-control" placeholder="Dr. Aisha Hassan" />
+                        <span asp-validation-for="DoctorName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Specialization" class="form-label fw-medium">Specialization</label>
+                        <input asp-for="Specialization" class="form-control" placeholder="Dermatology & Aesthetics" />
+                        <span asp-validation-for="Specialization" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-medium">Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="4"
+                                  placeholder="A short description of the clinic…"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* ── Contact ──────────────────────────────────────────────── *@
+        <div class="col-lg-6">
+            <div class="card shadow-none border h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold mb-4">
+                        <iconify-icon icon="solar:phone-line-duotone" class="me-2 text-primary"></iconify-icon>
+                        Contact
+                    </h5>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-medium">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="hello@clinic.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="WhatsAppNumber" class="form-label fw-medium">WhatsApp Number</label>
+                        <input asp-for="WhatsAppNumber" class="form-control" placeholder="+20 100 000 0000" />
+                        <span asp-validation-for="WhatsAppNumber" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label fw-medium">
+                            Address <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Address" class="form-control" placeholder="123 Main St, Cairo" />
+                        <span asp-validation-for="Address" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* ── Social & Media ───────────────────────────────────────── *@
+        <div class="col-12">
+            <div class="card shadow-none border">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold mb-4">
+                        <iconify-icon icon="solar:share-circle-line-duotone" class="me-2 text-primary"></iconify-icon>
+                        Social & Media
+                    </h5>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label asp-for="HeroImageUrl" class="form-label fw-medium">Hero Image URL</label>
+                            <input asp-for="HeroImageUrl" class="form-control" placeholder="https://…" />
+                            <div class="form-text">Displayed on the homepage hero section.</div>
+                            <span asp-validation-for="HeroImageUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="LogoUrl" class="form-label fw-medium">Logo URL</label>
+                            <input asp-for="LogoUrl" class="form-control" placeholder="https://…" />
+                            <span asp-validation-for="LogoUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="FacebookUrl" class="form-label fw-medium">Facebook Page URL</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <iconify-icon icon="ri:facebook-line"></iconify-icon>
+                                </span>
+                                <input asp-for="FacebookUrl" class="form-control" placeholder="https://facebook.com/…" />
+                            </div>
+                            <span asp-validation-for="FacebookUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="InstagramUrl" class="form-label fw-medium">Instagram Profile URL</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <iconify-icon icon="ri:instagram-line"></iconify-icon>
+                                </span>
+                                <input asp-for="InstagramUrl" class="form-control" placeholder="https://instagram.com/…" />
+                            </div>
+                            <span asp-validation-for="InstagramUrl" class="text-danger small"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @* ── Actions ─────────────────────────────────────────────────── *@
+    <div class="d-flex gap-3 mt-4">
+        <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:floppy-disk-line-duotone"></iconify-icon>
+            Save Changes
+        </button>
+        <a asp-action="Index" class="btn btn-light">Cancel</a>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -10,6 +10,7 @@ namespace Clinic.Application.Features.Articles.Commands.Models
     string Title,
     string Summary,
     string Content,
+    string? FeaturedImageUrl,
     ArticleStatus Status
 ) : IRequest<Result<SingleArticleDto>>;
 }

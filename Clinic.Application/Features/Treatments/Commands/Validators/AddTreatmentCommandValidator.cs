@@ -10,6 +10,7 @@ namespace Clinic.Application.Features.Treatments.Commands.Validators
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
+
                 .MaximumLength(100);
 
             RuleFor(x => x.Description)

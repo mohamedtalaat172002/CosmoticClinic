@@ -4,8 +4,10 @@ using Clinic.Application.Common.ResponseFormat;
 using Clinic.Application.Features.Consultations.Commands.Models;
 using Clinic.Application.Features.Consultations.Queries.Result;
 using Clinic.Application.Interfaces.Repositories.IConsultationRepo;
+using Clinic.Application.Resources;
 using Clinic.Domain.Entities.consultation;
 using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace Clinic.Application.Features.Consultations.Commands.Handlers
 {
@@ -14,11 +16,13 @@ namespace Clinic.Application.Features.Consultations.Commands.Handlers
         private readonly IConsultationWriteRepository _consultationWriteRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public AddConsultationCommandHandler(IConsultationWriteRepository consultationWriteRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IStringLocalizer<SharedResources> _stringLocalizer;
+        public AddConsultationCommandHandler(IConsultationWriteRepository consultationWriteRepository, IUnitOfWork unitOfWork, IMapper mapper, IStringLocalizer<SharedResources> stringLocalizer)
         {
             _consultationWriteRepository = consultationWriteRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _stringLocalizer = stringLocalizer;
         }
 
         public async Task<Result<SingleConsultationDto>> Handle(AddConsultationCommand request, CancellationToken cancellationToken)
@@ -33,7 +37,7 @@ namespace Clinic.Application.Features.Consultations.Commands.Handlers
 
             return Result<SingleConsultationDto>.Success(
                 consultationDto,
-                "Consultation added successfully.");
+              _stringLocalizer[SharedResourcesKeys.AddedSuccefully]);
         }
     }
 }

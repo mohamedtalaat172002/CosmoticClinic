@@ -1,4 +1,6 @@
-﻿namespace Clinic.Application.Features.Articles.Queries.Result
+﻿using Clinic.Domain.Entities.artical;
+
+namespace Clinic.Application.Features.Articles.Queries.Result
 {
     public sealed class SingleArticleDto
     {
@@ -11,6 +13,7 @@
 
         public string Content { get; private set; } = string.Empty;
 
+        public ArticleStatus Status { get; private set; }
         public string? FeaturedImageUrl { get; private set; }
     }
 }

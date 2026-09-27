@@ -34,7 +34,7 @@ namespace Clinic.Application.Features.Treatments.Queries.Handler
 
             var query = _treatmentReadRepository.GetAll();
 
-            var totalCount = await query.CountAsync(cancellationToken);
+            var totalCount = await query.Where(a => !a.IsDeleted).CountAsync(cancellationToken);
 
             query = _treatmentReadRepository
                 .GetAllBySearchCriteria(query, request);
@@ -59,7 +59,7 @@ namespace Clinic.Application.Features.Treatments.Queries.Handler
             );
 
             return Result<PagedResult<AllTreatmentsDto>>
-                .Success(pagedResult);
+                .Success(pagedResult, "Hello from the other message hahahhahahha");
         }
     }
 }

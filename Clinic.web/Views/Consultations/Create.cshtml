@@ -1,0 +1,45 @@
+@model ConsultationInputModel
+
+@{ ViewData["Title"] = "Book a consultation"; }
+
+<section class="form-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="text-center mb-4">
+                    <p class="text-uppercase text-primary fw-bold">Your first step</p>
+                    <h1>Book a consultation</h1>
+                    <p>Tell us a little about your goals and our team will contact you to arrange a suitable time.</p>
+                </div>
+                <form class="form-panel" asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control form-control-lg" placeholder="Your full name" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control form-control-lg" placeholder="+20 ..." />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Message" class="form-label">How can we help?</label>
+                        <textarea asp-for="Message" rows="5" class="form-control"
+                                  placeholder="Tell us about the treatment or concern you would like to discuss."></textarea>
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                    </div>
+
+                    <button class="btn btn-primary w-100" type="submit">
+                        Send consultation request <i class="bi bi-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

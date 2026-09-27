@@ -1,0 +1,101 @@
+﻿@model Clinic.Application.Features.Treatments.Commands.Models.UpdateTreatmentCommand
+
+@{
+    ViewData["Title"] = "Edit Treatment";
+    Layout = "_DashboardLayout";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h4 class="mb-1 fw-semibold">Edit Treatment</h4>
+        <p class="text-muted mb-0">
+            Update the treatment information.
+        </p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <form asp-action="Edit"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Name"
+                           class="form-label">
+                        Name
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description"
+                           class="form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="5"></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ImageUrl"
+                           class="form-label">
+                        Image URL
+                    </label>
+
+                    <input asp-for="ImageUrl"
+                           class="form-control" />
+
+                    <span asp-validation-for="ImageUrl"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="ti ti-device-floppy"></i>
+                        Save Changes
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-light">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

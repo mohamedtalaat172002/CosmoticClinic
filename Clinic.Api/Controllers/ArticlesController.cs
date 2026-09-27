@@ -28,7 +28,7 @@ namespace Clinic.Api.Controllers
             var result = await _mediator.Send(new GetArticleBySlugQuery(slug), cancellationToken);
             return Ok(result);
         }
-        [Authorize(Roles = ApplicationRoles.Admin)]
+        //[Authorize(Roles = ApplicationRoles.Admin)]
         [HttpGet(Router.ArticleRouting.List)]
         public async Task<IActionResult> GetAllArticlesAsync([FromQuery] GetAllArticlesQuery query, CancellationToken cancellationToken)
         {

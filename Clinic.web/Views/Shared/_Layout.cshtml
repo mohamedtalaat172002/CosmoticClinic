@@ -1,49 +1,200 @@
-﻿<!DOCTYPE html>
+@using Clinic.Application.Features.ClinicSetting.Queries.Result
+
+@{
+    var settings   = ViewData["ClinicSettings"] as ClinicSettingDto;
+    var clinicName = settings?.ClinicName ?? "Cosmetic Clinic";
+    var email      = settings?.Email ?? "hello@cosmeticclinic.com";
+    var phone      = settings?.WhatsAppNumber ?? "+20 100 000 0000";
+    var address    = settings?.Address ?? "Cairo, Egypt";
+    var fbUrl      = settings?.FacebookUrl;
+    var igUrl      = settings?.InstagramUrl;
+    var logoUrl    = settings?.LogoUrl;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Clinic.web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] | @clinicName</title>
+    <link rel="icon" href="~/assets/img/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/assets/vendor/aos/aos.css" />
+    <link rel="stylesheet" href="~/assets/vendor/glightbox/css/glightbox.min.css" />
+    <link rel="stylesheet" href="~/assets/vendor/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="~/assets/vendor/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/assets/css/main.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Clinic.web.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Clinic.web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+
+<header id="header" class="header fixed-top">
+    <div class="topbar d-flex align-items-center dark-background">
+        <div class="container d-flex justify-content-center justify-content-md-between">
+            <div class="contact-info d-flex align-items-center">
+                @if (!string.IsNullOrWhiteSpace(email))
+                {
+                    <i class="bi bi-envelope d-flex align-items-center">
+                        <a href="mailto:@email">@email</a>
+                    </i>
+                }
+                @if (!string.IsNullOrWhiteSpace(phone))
+                {
+                    <i class="bi bi-phone d-flex align-items-center ms-4">
+                        <span>@phone</span>
+                    </i>
+                }
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <div class="d-flex align-items-center gap-3">
+                @if (!string.IsNullOrWhiteSpace(fbUrl))
+                {
+                    <a href="@fbUrl" target="_blank" rel="noopener" class="text-white"><i class="bi bi-facebook"></i></a>
+                }
+                @if (!string.IsNullOrWhiteSpace(igUrl))
+                {
+                    <a href="@igUrl" target="_blank" rel="noopener" class="text-white ms-2"><i class="bi bi-instagram"></i></a>
+                }
+            </div>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Clinic.web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <div class="branding d-flex align-items-center">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+
+            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
+                @if (!string.IsNullOrWhiteSpace(logoUrl))
+                {
+                    <img src="@logoUrl" alt="@clinicName" style="max-height:40px;" />
+                }
+                else
+                {
+                    <h1 class="sitename">@clinicName</h1>
+                }
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a asp-controller="Home"       asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Treatments" asp-action="Index">Treatments</a></li>
+                    <li><a asp-controller="Articles"   asp-action="Index">Articles</a></li>
+                    <li><a asp-controller="Contact"    asp-action="Index">Contact</a></li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a asp-controller="Dashboard" asp-action="Index">
+                                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="nav-link btn btn-link p-0">Sign out</button>
+                            </form>
+                        </li>
+                    }
+                    else if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="nav-link btn btn-link p-0">Sign out</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="Account" asp-action="Login">Sign in</a></li>
+                    }
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <a class="cta-btn d-none d-sm-block" asp-controller="Consultations" asp-action="Create">
+                Book consultation
+            </a>
+
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+</header>
+
+<main class="main">
+    @if (TempData["SuccessMessage"] is string message)
+    {
+        <div class="container flash-container">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @message
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    }
+    @RenderBody()
+</main>
+
+<footer id="footer" class="footer light-background">
+    <div class="container footer-top">
+        <div class="row gy-4">
+
+            <div class="col-lg-5">
+                <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
+                    <span class="sitename">@clinicName</span>
+                </a>
+                <p>Thoughtful aesthetic care, personal treatment plans, and a team focused on your confidence.</p>
+                <div class="d-flex gap-3 mt-2">
+                    @if (!string.IsNullOrWhiteSpace(fbUrl))
+                    {
+                        <a href="@fbUrl" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(igUrl))
+                    {
+                        <a href="@igUrl" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a asp-controller="Treatments"    asp-action="Index">Treatments</a></li>
+                    <li><a asp-controller="Articles"      asp-action="Index">Articles</a></li>
+                    <li><a asp-controller="Consultations" asp-action="Create">Consultation</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-6">
+                <h4>Contact</h4>
+                <p>
+                    Sun–Thu, 10am–8pm<br />
+                    @address<br />
+                    @if (!string.IsNullOrWhiteSpace(phone))
+                    {
+                        <strong>Phone:</strong>@(" ")@phone
+                    }
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <div class="container copyright text-center mt-4">
+        <p>© @DateTime.UtcNow.Year @clinicName. All rights reserved.</p>
+    </div>
+</footer>
+
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+<div id="preloader"></div>
+
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/vendor/aos/aos.js"></script>
+<script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="~/assets/js/main.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

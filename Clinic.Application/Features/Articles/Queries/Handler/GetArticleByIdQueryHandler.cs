@@ -3,7 +3,9 @@ using Clinic.Application.Common.ResponseFormat;
 using Clinic.Application.Features.Articles.Queries.Models;
 using Clinic.Application.Features.Articles.Queries.Result;
 using Clinic.Application.Interfaces.Repositories.IArticalRepo;
+using Clinic.Application.Resources;
 using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace Clinic.Application.Features.Articles.Queries.Handler
 {
@@ -11,10 +13,12 @@ namespace Clinic.Application.Features.Articles.Queries.Handler
     {
         private readonly IArticleReadRepository _articleRepository;
         private readonly IMapper _mapper;
-        public GetArticleByIdQueryHandler(IArticleReadRepository articleRepository, IMapper mapper)
+        private readonly IStringLocalizer<SharedResources> _stringLocalizer;
+        public GetArticleByIdQueryHandler(IArticleReadRepository articleRepository, IMapper mapper, IStringLocalizer<SharedResources> stringLocalizer)
         {
             _articleRepository = articleRepository;
             _mapper = mapper;
+            _stringLocalizer = stringLocalizer;
         }
         public async Task<Result<SingleArticleDto>> Handle(GetArticleByIdQuery request, CancellationToken cancellationToken)
         {

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] | Clinic Admin</title>
+    <link rel="shortcut icon" type="image/png" href="~/admin/images/logos/favicon.png" />
+    <link rel="stylesheet" href="~/admin/css/styles.min.css" />
+</head>
+<body>
+
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6"
+         data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+
+        <aside class="left-sidebar">
+            <div>
+                <div class="brand-logo d-flex align-items-center justify-content-between">
+                    <a asp-controller="Dashboard" asp-action="Index" class="text-nowrap logo-img">
+                        <span class="fs-4 fw-bold text-primary">Cosmetic Clinic</span>
+                    </a>
+
+                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                        <i class="ti ti-x fs-8"></i>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                    <ul id="sidebarnav">
+
+                        <li class="nav-small-cap">
+                            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
+                            <span class="hide-menu">Main</span>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                               asp-controller="Dashboard"
+                               asp-action="Index">
+                                <iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+                                <span class="hide-menu">Overview</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Settings" ? "active" : "")"
+                               asp-controller="Dashboard"
+                               asp-action="Settings">
+                                <iconify-icon icon="solar:settings-line-duotone"></iconify-icon>
+                                <span class="hide-menu">Clinic Settings</span>
+                            </a>
+                        </li>
+
+                        <li><span class="sidebar-divider lg"></span></li>
+
+                        <li class="nav-small-cap">
+                            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
+                            <span class="hide-menu">Site</span>
+                        </li>
+
+                        <li class="sidebar-item"> <a class="sidebar-link" asp-controller="DashboardTreatments" asp-action="Index"> <iconify-icon icon="solar:medical-kit-line-duotone"></iconify-icon> <span class="hide-menu">Treatments</span> </a> </li>
+                        
+                        <li class="sidebar-item">
+                            <a class="sidebar-link"
+                               asp-controller="DashboardArticles"
+                               asp-action="Index">
+
+                                <iconify-icon icon="solar:document-text-line-duotone"></iconify-icon>
+
+                                <span class="hide-menu">Articles</span>
+                            </a>
+                        </li>
+                        
+                        <li class="sidebar-item">
+                            <a class="sidebar-link"
+                               asp-controller="DashboardConsultations"
+                               asp-action="Index">
+
+                                <iconify-icon icon="solar:chat-round-line-duotone"></iconify-icon>
+
+                                <span class="hide-menu">Consultations</span>
+                            </a>
+                        </li>
+                       
+
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-controller="Home" asp-action="Index">
+                                <iconify-icon icon="solar:home-angle-line-duotone"></iconify-icon>
+                                <span class="hide-menu">View Site</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="body-wrapper">
+
+            <div class="body-wrapper-inner">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="~/admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin/js/sidebarmenu.js"></script>
+    <script src="~/admin/js/app.min.js"></script>
+    <script src="~/admin/libs/simplebar/dist/simplebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+

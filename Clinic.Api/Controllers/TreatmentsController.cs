@@ -30,9 +30,15 @@ namespace Clinic.Api.Controllers
 
 
         [HttpGet(Router.TreatmentRouting.GetBySlug)]
-        public async Task<IActionResult> GetTreatmentBySlugAsync(string slug, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetTreatmentBySlugAsync(
+ string slug,
+ [FromQuery] GetTreatmentBySlugQuery query,
+ CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetTreatmentBySlugQuery(slug), cancellationToken);
+            query.Slug = slug;
+
+            var result = await _mediator.Send(query, cancellationToken);
+
             return Ok(result);
         }
 
@@ -42,7 +48,7 @@ namespace Clinic.Api.Controllers
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }
-        [Authorize(Roles = ApplicationRoles.Admin)]
+        //[Authorize(Roles = ApplicationRoles.Admin)]
         [HttpPut(Router.TreatmentRouting.Edit)]
         public virtual async Task<IActionResult> Update(Guid id, [FromBody] UpdateTreatmentCommand command, CancellationToken cancellationToken)
         {
@@ -56,12 +62,13 @@ namespace Clinic.Api.Controllers
             var result = await _mediator.Send(new DeleteTreatmentCommand(id), cancellationToken);
             return Ok(result);
         }
-        [Authorize(Roles = ApplicationRoles.Admin)]
+        //[Authorize(Roles = ApplicationRoles.Admin)]
         [HttpPost(Router.TreatmentRouting.Create)]
         public async Task<IActionResult> AddTreatment([FromBody] AddTreatmentCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(result);
+
         }
 
     }

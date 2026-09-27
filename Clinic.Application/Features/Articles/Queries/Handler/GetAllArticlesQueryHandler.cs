@@ -25,13 +25,13 @@ namespace Clinic.Application.Features.Articles.Queries.Handler
             var pageSize = request.PageSize ?? 10;
 
             var query = _articleReadRepository.GetAll();
+            var totalCount = await query.Where(a => !a.IsDeleted).CountAsync(cancellationToken);
 
-            var totalCount = await query.CountAsync(cancellationToken);
+
 
             query = _articleReadRepository.GetAllBySearchCriteria(query, request);
             if (query is null)
                 return Result<PagedResult<AllArticlesDto>>.Failure("Articles not found", ErrorType.NotFound);
-
             var articles = await query.OrderBy(p => p.CreatedAt)
                 .ToListAsync(cancellationToken);
 
@@ -45,7 +45,7 @@ namespace Clinic.Application.Features.Articles.Queries.Handler
                 pageSize
             );
 
-            return Result<PagedResult<AllArticlesDto>>.Success(pagedResult);
+            return Result<PagedResult<AllArticlesDto>>.Success(pagedResult, "Articles retrieved successfully");
         }
     }
 }

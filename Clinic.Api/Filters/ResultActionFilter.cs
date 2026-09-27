@@ -25,9 +25,9 @@ namespace Clinic.Api.Filters
         {
             if (result.IsSuccess)
             {
-                return new OkObjectResult(
-                    ApiResponse<object>.Success(result.Value, HttpStatusCode.OK)
-                );
+                return new OkObjectResult(ApiResponse<object>.Success(
+                     result.Value, HttpStatusCode.OK, result.Message)
+);
             }
 
             var statusCode = result.ErrorType switch

@@ -15,6 +15,7 @@ namespace Clinic.Application.Features.Articles.Commands.Validaitons
                 .MaximumLength(100)
                 .WithMessage("Title cannot exceed 100 characters.");
 
+
             RuleFor(x => x.Summary)
                 .NotEmpty()
                 .WithMessage("Summary is required.")
