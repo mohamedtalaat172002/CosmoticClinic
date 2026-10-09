@@ -1,4 +1,3 @@
-
 using Clinic.Application.Features.Articles.Queries.Result;
 using Clinic.Application.Features.ClinicSetting.Queries.Result;
 using Clinic.Application.Features.Treatments.Queries.Result;
@@ -9,8 +8,15 @@ namespace Clinic.web.Models;
 public sealed class HomeViewModel
 {
     public ClinicSettingDto? ClinicSettings { get; init; }
-    public string? HeroImageUrl => ClinicSettings?.HeroImageUrl;
+    public IReadOnlyList<ClinicSettingImageDto> HeroImages { get; init; } = [];
+    public string? HeroImageUrl => HeroImages.FirstOrDefault(x => x.IsPrimary)?.Url
+                                ?? HeroImages.FirstOrDefault()?.Url
+                                ?? ClinicSettings?.HeroImageUrl;
+
+    // List cards: each item carries only its primary image (AllTreatmentsDto.ImageUrl).
     public IReadOnlyList<AllTreatmentsDto> Treatments { get; init; } = [];
+
+    // List cards: each item carries only its primary image (AllArticlesDto.FeaturedImageUrl).
     public IReadOnlyList<AllArticlesDto> Articles { get; init; } = [];
 }
 

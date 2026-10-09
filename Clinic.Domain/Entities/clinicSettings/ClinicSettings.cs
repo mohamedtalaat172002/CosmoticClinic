@@ -11,11 +11,10 @@ namespace Clinic.Domain.Entities.clinicSettings
         public string? WhatsAppNumber { get; set; }
         public string? Email { get; set; }
         public string Address { get; set; } = null!;
-        public string? LogoUrl { get; set; }
-        public string? HeroImageUrl { get; set; }
+
         public string? FacebookUrl { get; set; }
         public string? InstagramUrl { get; set; }
-
+        public ICollection<ClinicSettingImage> Images { get; set; } = new List<ClinicSettingImage>();
         public ClinicSettings()
         {
             Id = Guid.Parse("11111111-1111-1111-1111-111111111111");

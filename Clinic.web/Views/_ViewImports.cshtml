@@ -1,4 +1,7 @@
 ﻿@using Clinic.web
 @using Clinic.web.Models
+@using Clinic.web.Resources
 @using Clinic.Application.Features.ClinicSetting.Queries.Result
+@using Microsoft.Extensions.Localization
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IStringLocalizer<SharedResources> _localizer

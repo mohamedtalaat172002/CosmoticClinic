@@ -1,37 +1,40 @@
-```cshtml
-@using Clinic.Application.Features.ClinicSetting.Queries.Result
+@* @using Clinic.Application.Features.ClinicSetting.Queries.Result
 @model ClinicSettingDto
 
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.DashPageTitle].Value;
     Layout = "_DashboardLayout";
 }
 
 <div class="container-fluid overflow-hidden">
 
-    <div class="row mb-4 align-items-center">
-        <div class="col">
-            <h4 class="mb-1 fw-semibold">Clinic Overview</h4>
-            <p class="mb-0 text-muted">Welcome back, @User.Identity?.Name</p>
-        </div>
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold display-6 mb-2">
+            @_localizer[SharedResourcesKeys.DashPageTitle]
+        </h1>
 
-        <div class="col-auto">
-            <a asp-action="Settings"
-               class="btn btn-primary d-flex align-items-center gap-2">
-                <iconify-icon icon="solar:pen-line-duotone"></iconify-icon>
-                Edit Settings
-            </a>
-        </div>
+        <p class="text-muted fs-5 mb-3">
+            @_localizer[SharedResourcesKeys.DashWelcome], @User.Identity?.Name
+        </p>
+
+        <a asp-action="Settings"
+           class="btn btn-primary d-inline-flex align-items-center gap-2 px-4 py-2">
+            <iconify-icon icon="solar:pen-line-duotone"></iconify-icon>
+            @_localizer[SharedResourcesKeys.DashEditSettings]
+        </a>
     </div>
 
     @if (Model is null)
     {
         <div class="alert alert-warning d-flex align-items-center gap-3" role="alert">
             <iconify-icon icon="solar:danger-circle-line-duotone" class="fs-6"></iconify-icon>
+
             <div>
-                Clinic settings have not been configured yet.
+                @_localizer[SharedResourcesKeys.DashNotConfigured]
+
                 <a asp-action="Settings" class="alert-link ms-1">
-                    Configure now →
+                    @_localizer[SharedResourcesKeys.DashConfigureNow]
                 </a>
             </div>
         </div>
@@ -40,16 +43,21 @@
     {
         <div class="row g-4 mb-4">
 
+            <!-- Clinic -->
             <div class="col-lg-3 col-md-6">
                 <div class="card shadow-none border h-100">
                     <div class="card-body">
+
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <div class="rounded-pill bg-primary-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
                                 <iconify-icon icon="solar:building-line-duotone"
-                                              class="fs-7 text-primary"></iconify-icon>
+                                              class="fs-7 text-primary">
+                                </iconify-icon>
                             </div>
 
-                            <span class="fs-3 text-muted fw-medium">Clinic</span>
+                            <span class="fs-3 text-muted fw-medium">
+                                @_localizer[SharedResourcesKeys.DashCardClinic]
+                            </span>
                         </div>
 
                         <h5 class="fw-semibold mb-1">
@@ -57,22 +65,28 @@
                         </h5>
 
                         <p class="text-muted mb-0 fs-3">
-                            @(Model.Specialization ?? "No specialization set")
+                            @(Model.Specialization ?? _localizer[SharedResourcesKeys.DashNoSpecialization].Value)
                         </p>
+
                     </div>
                 </div>
             </div>
 
+            <!-- Doctor -->
             <div class="col-lg-3 col-md-6">
                 <div class="card shadow-none border h-100">
                     <div class="card-body">
+
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <div class="rounded-pill bg-success-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
                                 <iconify-icon icon="solar:user-rounded-line-duotone"
-                                              class="fs-7 text-success"></iconify-icon>
+                                              class="fs-7 text-success">
+                                </iconify-icon>
                             </div>
 
-                            <span class="fs-3 text-muted fw-medium">Doctor</span>
+                            <span class="fs-3 text-muted fw-medium">
+                                @_localizer[SharedResourcesKeys.DashCardDoctor]
+                            </span>
                         </div>
 
                         <h5 class="fw-semibold mb-1">
@@ -82,20 +96,26 @@
                         <p class="text-muted mb-0 fs-3">
                             @(Model.Address ?? "—")
                         </p>
+
                     </div>
                 </div>
             </div>
 
+            <!-- Contact -->
             <div class="col-lg-3 col-md-6">
                 <div class="card shadow-none border h-100">
                     <div class="card-body">
+
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <div class="rounded-pill bg-warning-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
                                 <iconify-icon icon="solar:phone-line-duotone"
-                                              class="fs-7 text-warning"></iconify-icon>
+                                              class="fs-7 text-warning">
+                                </iconify-icon>
                             </div>
 
-                            <span class="fs-3 text-muted fw-medium">Contact</span>
+                            <span class="fs-3 text-muted fw-medium">
+                                @_localizer[SharedResourcesKeys.DashCardContact]
+                            </span>
                         </div>
 
                         <h5 class="fw-semibold mb-1">
@@ -103,22 +123,28 @@
                         </h5>
 
                         <p class="text-muted mb-0 fs-3">
-                            @(Model.Email ?? "No email set")
+                            @(Model.Email ?? _localizer[SharedResourcesKeys.DashNoEmail].Value)
                         </p>
+
                     </div>
                 </div>
             </div>
 
+            <!-- Social -->
             <div class="col-lg-3 col-md-6">
                 <div class="card shadow-none border h-100">
                     <div class="card-body">
+
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <div class="rounded-pill bg-secondary-subtle px-3 py-2 d-inline-flex align-items-center justify-content-center">
                                 <iconify-icon icon="solar:share-circle-line-duotone"
-                                              class="fs-7 text-secondary"></iconify-icon>
+                                              class="fs-7 text-secondary">
+                                </iconify-icon>
                             </div>
 
-                            <span class="fs-3 text-muted fw-medium">Social</span>
+                            <span class="fs-3 text-muted fw-medium">
+                                @_localizer[SharedResourcesKeys.DashCardSocial]
+                            </span>
                         </div>
 
                         <div class="d-flex gap-3 mt-2 flex-wrap">
@@ -149,11 +175,12 @@
                                                     string.IsNullOrWhiteSpace(Model.InstagramUrl))
                             {
                                 <span class="text-muted fs-3">
-                                    No social links set
+                                    @_localizer[SharedResourcesKeys.DashNoSocialLinks]
                                 </span>
                             }
 
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -167,15 +194,19 @@
                 <div class="col-lg-6">
                     <div class="card shadow-none border h-100">
                         <div class="card-body">
+
                             <h5 class="card-title fw-semibold mb-3">
                                 <iconify-icon icon="solar:file-text-line-duotone"
-                                              class="me-2 text-primary"></iconify-icon>
-                                Description
+                                              class="me-2 text-primary">
+                                </iconify-icon>
+
+                                @_localizer[SharedResourcesKeys.DashCardDescription]
                             </h5>
 
                             <p class="mb-0 text-muted">
                                 @Model.Description
                             </p>
+
                         </div>
                     </div>
                 </div>
@@ -186,16 +217,20 @@
                 <div class="col-lg-6">
                     <div class="card shadow-none border h-100">
                         <div class="card-body">
+
                             <h5 class="card-title fw-semibold mb-3">
                                 <iconify-icon icon="solar:gallery-line-duotone"
-                                              class="me-2 text-primary"></iconify-icon>
-                                Hero Image
+                                              class="me-2 text-primary">
+                                </iconify-icon>
+
+                                @_localizer[SharedResourcesKeys.DashCardHeroImage]
                             </h5>
 
                             <img src="@Model.HeroImageUrl"
                                  alt="Hero image"
                                  class="img-fluid rounded"
                                  style="max-height:220px;object-fit:cover;width:100%;" />
+
                         </div>
                     </div>
                 </div>
@@ -203,4 +238,352 @@
 
         </div>
     }
+
+</div> *@
+@using Clinic.Application.Features.ClinicSetting.Queries.Result
+@model ClinicSettingDto
+
+@{
+    ViewData["Title"] = _localizer[SharedResourcesKeys.DashPageTitle].Value;
+    Layout = "_DashboardLayout";
+}
+
+<div class="container-fluid overflow-hidden">
+
+    ```
+    <!-- Page Header -->
+    <div class="text-center py-4 mb-5">
+
+        <div class="d-inline-flex align-items-center justify-content-center rounded-pill bg-primary-subtle px-3 py-2 mb-3">
+            <iconify-icon icon="solar:widget-4-line-duotone"
+                          class="fs-5 text-primary me-2">
+            </iconify-icon>
+
+            <span class="text-primary fw-semibold">
+                @_localizer[SharedResourcesKeys.DashMain]
+            </span>
+        </div>
+
+        <h1 class="fw-bold display-5 mb-3">
+            @_localizer[SharedResourcesKeys.DashPageTitle]
+        </h1>
+
+        <p class="text-muted fs-5 mb-4 mx-auto"
+           style="max-width: 700px; line-height: 1.8;">
+            @_localizer[SharedResourcesKeys.DashWelcome],
+            <span class="fw-semibold text-dark">
+                @User.Identity?.Name
+            </span>
+        </p>
+
+        <a asp-action="Settings"
+           class="btn btn-primary d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 shadow-sm">
+
+            <iconify-icon icon="solar:pen-line-duotone"
+                          class="fs-5">
+            </iconify-icon>
+
+            <span>
+                @_localizer[SharedResourcesKeys.DashEditSettings]
+            </span>
+
+        </a>
+
+    </div>
+
+    @if (Model is null)
+    {
+        <div class="alert alert-warning d-flex align-items-center gap-3 rounded-4 border-0 shadow-sm p-4 mb-4"
+             role="alert">
+
+            <div class="d-flex align-items-center justify-content-center rounded-circle bg-warning-subtle flex-shrink-0"
+                 style="width:48px;height:48px;">
+
+                <iconify-icon icon="solar:danger-circle-line-duotone"
+                              class="fs-5 text-warning">
+                </iconify-icon>
+
+            </div>
+
+            <div>
+                <div class="fw-semibold mb-1">
+                    @_localizer[SharedResourcesKeys.DashNotConfigured]
+                </div>
+
+                <a asp-action="Settings"
+                   class="alert-link">
+                    @_localizer[SharedResourcesKeys.DashConfigureNow]
+                </a>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- Summary Cards -->
+        <div class="row g-4 mb-4">
+
+            <!-- Clinic -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="rounded-4 bg-primary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                                     style="width:48px;height:48px;">
+
+                                    <iconify-icon icon="solar:building-line-duotone"
+                                                  class="fs-5 text-primary">
+                                    </iconify-icon>
+
+                                </div>
+
+                                <span class="text-muted fw-semibold">
+                                    @_localizer[SharedResourcesKeys.DashCardClinic]
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <h5 class="fw-bold mb-2">
+                            @(Model.ClinicName ?? "—")
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            @(Model.Specialization ?? _localizer[SharedResourcesKeys.DashNoSpecialization].Value)
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Doctor -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center gap-3 mb-4">
+
+                            <div class="rounded-4 bg-success-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                                 style="width:48px;height:48px;">
+
+                                <iconify-icon icon="solar:user-rounded-line-duotone"
+                                              class="fs-5 text-success">
+                                </iconify-icon>
+
+                            </div>
+
+                            <span class="text-muted fw-semibold">
+                                @_localizer[SharedResourcesKeys.DashCardDoctor]
+                            </span>
+
+                        </div>
+
+                        <h5 class="fw-bold mb-2">
+                            @Model.DoctorName
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            @(Model.Address ?? "—")
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center gap-3 mb-4">
+
+                            <div class="rounded-4 bg-warning-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                                 style="width:48px;height:48px;">
+
+                                <iconify-icon icon="solar:phone-line-duotone"
+                                              class="fs-5 text-warning">
+                                </iconify-icon>
+
+                            </div>
+
+                            <span class="text-muted fw-semibold">
+                                @_localizer[SharedResourcesKeys.DashCardContact]
+                            </span>
+
+                        </div>
+
+                        <h5 class="fw-bold mb-2">
+                            @(Model.WhatsAppNumber ?? "—")
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            @(Model.Email ?? _localizer[SharedResourcesKeys.DashNoEmail].Value)
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Social -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center gap-3 mb-4">
+
+                            <div class="rounded-4 bg-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                                 style="width:48px;height:48px;">
+
+                                <iconify-icon icon="solar:share-circle-line-duotone"
+                                              class="fs-5 text-secondary">
+                                </iconify-icon>
+
+                            </div>
+
+                            <span class="text-muted fw-semibold">
+                                @_localizer[SharedResourcesKeys.DashCardSocial]
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            @if (!string.IsNullOrWhiteSpace(Model.FacebookUrl))
+                            {
+                                <a href="@Model.FacebookUrl"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="btn btn-sm btn-light border d-flex align-items-center gap-2 rounded-3 px-3">
+
+                                    <iconify-icon icon="ri:facebook-line"></iconify-icon>
+
+                                    Facebook
+
+                                </a>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.InstagramUrl))
+                            {
+                                <a href="@Model.InstagramUrl"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="btn btn-sm btn-light border d-flex align-items-center gap-2 rounded-3 px-3">
+
+                                    <iconify-icon icon="ri:instagram-line"></iconify-icon>
+
+                                    Instagram
+
+                                </a>
+                            }
+
+                            @if (string.IsNullOrWhiteSpace(Model.FacebookUrl) &&
+                                                    string.IsNullOrWhiteSpace(Model.InstagramUrl))
+                            {
+                                <span class="text-muted">
+                                    @_localizer[SharedResourcesKeys.DashNoSocialLinks]
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Description & Hero Image -->
+        <div class="row g-4">
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div class="col-lg-6">
+
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                        <div class="card-body p-4 p-lg-5">
+
+                            <div class="d-flex align-items-center gap-3 mb-4">
+
+                                <div class="rounded-4 bg-primary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                                     style="width:48px;height:48px;">
+
+                                    <iconify-icon icon="solar:file-text-line-duotone"
+                                                  class="fs-5 text-primary">
+                                    </iconify-icon>
+
+                                </div>
+
+                                <h5 class="fw-bold mb-0">
+                                    @_localizer[SharedResourcesKeys.DashCardDescription]
+                                </h5>
+
+                            </div>
+
+                            <p class="mb-0 text-muted"
+                               style="line-height:1.9;">
+                                @Model.Description
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.HeroImageUrl))
+            {
+                <div class="col-lg-6">
+
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                        <div class="card-body p-4 p-lg-5">
+
+                            <div class="d-flex align-items-center gap-3 mb-4">
+
+                                <div class="rounded-4 bg-primary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                                     style="width:48px;height:48px;">
+
+                                    <iconify-icon icon="solar:gallery-line-duotone"
+                                                  class="fs-5 text-primary">
+                                    </iconify-icon>
+
+                                </div>
+
+                                <h5 class="fw-bold mb-0">
+                                    @_localizer[SharedResourcesKeys.DashCardHeroImage]
+                                </h5>
+
+                            </div>
+
+                            <img src="@Model.HeroImageUrl"
+                                 alt="Hero image"
+                                 class="img-fluid rounded-4 w-100"
+                                 style="height:220px;object-fit:cover;" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    
+
 </div>

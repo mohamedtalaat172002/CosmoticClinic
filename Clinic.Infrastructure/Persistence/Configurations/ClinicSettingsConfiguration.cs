@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Clinic.Infrastructure.Persistence.Configurations
 {
-
-    public class ClinicSettingsConfiguration : IEntityTypeConfiguration<ClinicSettings>
+    public class ClinicSettingsConfiguration
+        : IEntityTypeConfiguration<ClinicSettings>
     {
         private static readonly Guid ClinicSettingsId =
             Guid.Parse("11111111-1111-1111-1111-111111111111");
 
-        public void Configure(EntityTypeBuilder<ClinicSettings> builder)
+        public void Configure(
+            EntityTypeBuilder<ClinicSettings> builder)
         {
             builder.ToTable("ClinicSettings", table =>
             {
@@ -42,13 +43,7 @@ namespace Clinic.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.Address)
                 .IsRequired()
-                .HasMaxLength(500);
-
-            builder.Property(x => x.LogoUrl)
-                .HasMaxLength(500);
-
-            builder.Property(x => x.HeroImageUrl)
-                .HasMaxLength(500);
+                .HasMaxLength(600);
 
             builder.Property(x => x.FacebookUrl)
                 .HasMaxLength(500);
@@ -56,13 +51,32 @@ namespace Clinic.Infrastructure.Persistence.Configurations
             builder.Property(x => x.InstagramUrl)
                 .HasMaxLength(500);
 
-            builder.HasData(new ClinicSettings
-            {
-                Id = ClinicSettingsId,
-                ClinicName = "Clinic Name",
-                DoctorName = "Doctor Name",
-                Address = "Clinic Address"
-            });
+            builder.HasData(
+                new ClinicSettings
+                {
+                    Id = ClinicSettingsId,
+
+                    ClinicName = "Cosmetic Clinic",
+
+                    DoctorName = "Doctor Name",
+
+                    Specialization = "Cosmetic Surgery",
+
+                    Description =
+                        "Welcome to our cosmetic clinic. " +
+                        "We provide specialized cosmetic and aesthetic treatments " +
+                        "with a focus on quality and patient care.",
+
+                    WhatsAppNumber = "+201000000000",
+
+                    Email = "info@clinic.com",
+
+                    Address = "Cairo, Egypt",
+
+                    FacebookUrl = null,
+
+                    InstagramUrl = null
+                });
         }
     }
 }

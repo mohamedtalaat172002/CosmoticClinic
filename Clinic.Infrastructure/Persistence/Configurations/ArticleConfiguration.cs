@@ -28,10 +28,9 @@ namespace Clinic.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(a => a.Content)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(3000);
 
-            builder.Property(a => a.FeaturedImageUrl)
-                .HasMaxLength(500);
 
             builder.Property(a => a.Status)
                 .HasConversion<string>()

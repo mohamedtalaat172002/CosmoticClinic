@@ -23,7 +23,7 @@ namespace Clinic.Infrastructure.Persistence.Configurations
 
 
             builder.Property(x => x.Message)
-                .HasMaxLength(500);
+                .HasMaxLength(1000);
 
 
             builder.Property(x => x.Status)

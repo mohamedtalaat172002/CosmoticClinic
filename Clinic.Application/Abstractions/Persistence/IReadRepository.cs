@@ -15,5 +15,7 @@ namespace Clinic.Application.Abstractions.Persistence
         IQueryable<TEntity> ApplyCustomFilters(
                 IQueryable<TEntity> query,
                 TEntitySC criteria);
+        IQueryable<TEntity> ApplyFilters(IQueryable<TEntity> query, TEntitySC criteria);
+        IQueryable<TEntity> ApplyPaging(IQueryable<TEntity> query, TEntitySC criteria);
     }
 }

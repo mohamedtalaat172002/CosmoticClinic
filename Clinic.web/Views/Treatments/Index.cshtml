@@ -2,7 +2,7 @@
 @model Clinic.Application.Abstractions.Queries.PagedResult<AllTreatmentsDto>
 
 @{
-    ViewData["Title"] = "Treatments";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.ServicesPageTitle].Value;
     var search = Context.Request.Query["search"].ToString();
     var totalPages = Model.PageSize > 0
         ? (int)Math.Ceiling((double)Model.TotalRows / Model.PageSize) : 0;
@@ -10,8 +10,8 @@
 
 <section class="page-hero">
     <div class="container text-center">
-        <h1>Our treatments</h1>
-        <p class="lead mb-0">Personalized solutions designed to help you look and feel your best.</p>
+        <h1>@_localizer[SharedResourcesKeys.ServicesPageTitle]</h1>
+        <p class="lead mb-0">@_localizer[SharedResourcesKeys.ServicesPageSub]</p>
     </div>
 </section>
 
@@ -21,7 +21,8 @@
         <form method="get" asp-action="Index" class="mb-5">
             <div class="input-group" style="max-width: 480px; margin: 0 auto;">
                 <input type="text" name="search" value="@search" class="form-control"
-                       placeholder="Search treatments…" aria-label="Search treatments" />
+                       placeholder="@_localizer[SharedResourcesKeys.SearchServicesPlaceholder]"
+                       aria-label="Search services" />
                 <input type="hidden" name="pageSize" value="@Model.PageSize" />
                 <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
             </div>
@@ -34,7 +35,7 @@
                     <article class="service-card">
                         @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                         {
-                            <img src="@item.ImageUrl" alt="@item.Name" />
+                            <img src="@item.ImageUrl" alt="@item.Name" class="card-img-top card-media" />
                         }
                         else
                         {
@@ -44,7 +45,7 @@
                             <h3>@item.Name</h3>
                             <p>@item.Description</p>
                             <a asp-action="Details" asp-route-slug="@item.Slug" class="read-more">
-                                Explore treatment <i class="bi bi-arrow-right"></i>
+                                @_localizer[SharedResourcesKeys.ExploreService] <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
                     </article>
@@ -55,8 +56,8 @@
                 <div class="col-12">
                     <p class="text-center text-muted">
                         @(string.IsNullOrWhiteSpace(search)
-                            ? "No treatments are available yet."
-                            : $"No treatments found for \"{search}\".")
+                            ? _localizer[SharedResourcesKeys.NoServicesAvailable].Value
+                            : string.Format(_localizer[SharedResourcesKeys.NoServicesFound].Value, search))
                     </p>
                 </div>
             }
@@ -64,7 +65,7 @@
 
         @if (totalPages > 1)
         {
-            <nav class="mt-5" aria-label="Treatments pagination">
+            <nav class="mt-5" aria-label="Services pagination">
                 <ul class="pagination justify-content-center">
                     @if (Model.PageIndex > 1)
                     {
@@ -72,7 +73,9 @@
                             <a class="page-link" asp-action="Index"
                                asp-route-search="@search"
                                asp-route-pageIndex="@(Model.PageIndex - 1)"
-                               asp-route-pageSize="@Model.PageSize">Previous</a>
+                               asp-route-pageSize="@Model.PageSize">
+                                @_localizer[SharedResourcesKeys.Previous]
+                            </a>
                         </li>
                     }
                     @for (var pageNum = 1; pageNum <= totalPages; pageNum++)
@@ -90,7 +93,9 @@
                             <a class="page-link" asp-action="Index"
                                asp-route-search="@search"
                                asp-route-pageIndex="@(Model.PageIndex + 1)"
-                               asp-route-pageSize="@Model.PageSize">Next</a>
+                               asp-route-pageSize="@Model.PageSize">
+                                @_localizer[SharedResourcesKeys.Next]
+                            </a>
                         </li>
                     }
                 </ul>

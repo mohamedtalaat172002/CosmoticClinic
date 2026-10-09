@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Clinic.Application.Abstractions.Queries;
+﻿using Clinic.Application.Abstractions.Queries;
 using Clinic.Application.Common.ResponseFormat;
 using Clinic.Application.Features.Articles.Queries.Result;
 using Clinic.Application.Features.Treatments.Queries.Models;
@@ -12,56 +11,94 @@ using Microsoft.EntityFrameworkCore;
 namespace Clinic.Application.Features.Treatments.Queries.Handler
 {
     internal sealed class GetTreatmentByIdQueryHandler
-    : IRequestHandler<GetTreatmentByIdQuery, Result<SingleTreatmentDto>>
+        : IRequestHandler<GetTreatmentByIdQuery, Result<AdminTreatmentDto>>
     {
         private readonly ITreatmentReadRepository _treatmentReadRepository;
-        private readonly IMapper _mapper;
         private readonly IArticleReadRepository _articleReadRepository;
+
         public GetTreatmentByIdQueryHandler(
             ITreatmentReadRepository treatmentReadRepository,
-            IMapper mapper,
             IArticleReadRepository articleReadRepository)
         {
             _treatmentReadRepository = treatmentReadRepository;
-            _mapper = mapper;
             _articleReadRepository = articleReadRepository;
         }
 
-        public async Task<Result<SingleTreatmentDto>> Handle(
+        public async Task<Result<AdminTreatmentDto>> Handle(
             GetTreatmentByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var pageIndex = request.PageIndex ?? 1;
-            var pageSize = request.PageSize ?? 10;
+            var treatment = await _treatmentReadRepository
+                .GetAll()
+                .Include(t => t.Images)
+                .FirstOrDefaultAsync(
+                    t => t.Id == request.Id,
+                    cancellationToken);
 
-            var query = _articleReadRepository.GetAll().Where(a => a.TreatmentId == request.Id);
+            if (treatment is null)
+            {
+                return Result<AdminTreatmentDto>.Failure(
+                    "Treatment not found.",
+                    ErrorType.NotFound);
+            }
 
-            var totalArticleCount = await query.CountAsync(cancellationToken);
+            var articles = await _articleReadRepository
+                .GetAll()
+                .Where(a =>
+                    a.TreatmentId == treatment.Id &&
+                    !a.IsDeleted)
+                .OrderByDescending(a => a.CreatedAt)
+                .ThenBy(a => a.Id)
+                .Select(a => new AllArticlesDto
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Status = a.Status,
+                    Slug = a.Slug,
+                    Summary = a.Summary,
 
-            query = _articleReadRepository.GetAllBySearchCriteria(query, request);
-
-            var articles = await query.OrderBy(p => p.CreatedAt)
+                    FeaturedImageUrl = a.Images
+                        .Where(i => i.IsPrimary)
+                        .Select(i => new ArticleImageDto
+                        {
+                            Id = i.Id,
+                            Url = i.Url,
+                            IsPrimary = i.IsPrimary,
+                            DisplayOrder = i.DisplayOrder
+                        })
+                        .FirstOrDefault()
+                })
                 .ToListAsync(cancellationToken);
 
-            var pagedArticles = new PagedResult<AllArticlesDto>(
-                _mapper.Map<List<AllArticlesDto>>(articles),
-                totalArticleCount,
-                pageIndex,
-                pageSize
-            );
-
-            var treatment = await _treatmentReadRepository.GetById(request.Id);
-
-            var result = new SingleTreatmentDto
+            var result = new AdminTreatmentDto
             {
                 Id = treatment.Id,
                 Name = treatment.Name,
+                Slug = treatment.Slug,
                 Description = treatment.Description,
-                ImageUrl = treatment.ImageUrl,
-                Articles = pagedArticles
-            };
-            return Result<SingleTreatmentDto>.Success(result);
+                IsDeleted = treatment.IsDeleted,
+                CreatedAt = treatment.CreatedAt,
+                UpdatedAt = treatment.UpdatedAt,
 
+                Images = treatment.Images
+                    .OrderBy(i => i.DisplayOrder)
+                    .Select(i => new TreatmentImageDto
+                    {
+                        Id = i.Id,
+                        Url = i.Url,
+                        IsPrimary = i.IsPrimary,
+                        DisplayOrder = i.DisplayOrder
+                    })
+                    .ToList(),
+
+                Articles = new PagedResult<AllArticlesDto>(
+                    articles,
+                    articles.Count,
+                    1,
+                    articles.Count)
+            };
+
+            return Result<AdminTreatmentDto>.Success(result);
         }
     }
 }

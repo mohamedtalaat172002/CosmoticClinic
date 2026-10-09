@@ -8,8 +8,7 @@ namespace Clinic.Application.Mappings.ArticleMapping
         {
             GetSingleArticleByIDMapping();
             GetAllArticlesMapping();
-            AddArticleMapping();
-            UpdateArticleMapping();
+            // AddArticleMapping and UpdateArticleMapping removed — handlers build entities manually
         }
     }
 }

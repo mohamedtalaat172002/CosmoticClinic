@@ -1,34 +1,62 @@
-﻿using AutoMapper;
-using Clinic.Application.Common.ResponseFormat;
+﻿using Clinic.Application.Common.ResponseFormat;
 using Clinic.Application.Features.Articles.Queries.Models;
 using Clinic.Application.Features.Articles.Queries.Result;
 using Clinic.Application.Interfaces.Repositories.IArticalRepo;
-using Clinic.Application.Resources;
 using MediatR;
-using Microsoft.Extensions.Localization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Clinic.Application.Features.Articles.Queries.Handler
 {
-    internal sealed class GetArticleByIdQueryHandler : IRequestHandler<GetArticleByIdQuery, Result<SingleArticleDto>>
+    internal sealed class GetArticleByIdQueryHandler
+        : IRequestHandler<GetArticleByIdQuery, Result<AdminArticleDto>>
     {
-        private readonly IArticleReadRepository _articleRepository;
-        private readonly IMapper _mapper;
-        private readonly IStringLocalizer<SharedResources> _stringLocalizer;
-        public GetArticleByIdQueryHandler(IArticleReadRepository articleRepository, IMapper mapper, IStringLocalizer<SharedResources> stringLocalizer)
+        private readonly IArticleReadRepository _articleReadRepository;
+
+        public GetArticleByIdQueryHandler(IArticleReadRepository articleReadRepository)
         {
-            _articleRepository = articleRepository;
-            _mapper = mapper;
-            _stringLocalizer = stringLocalizer;
+            _articleReadRepository = articleReadRepository;
         }
-        public async Task<Result<SingleArticleDto>> Handle(GetArticleByIdQuery request, CancellationToken cancellationToken)
+
+        public async Task<Result<AdminArticleDto>> Handle(
+            GetArticleByIdQuery request,
+            CancellationToken cancellationToken)
         {
-            var article = await _articleRepository.GetById(request.id);
+            var article = await _articleReadRepository
+                .GetAll()
+                .Where(a => a.Id == request.Id)
+                .Select(a => new AdminArticleDto
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Slug = a.Slug,
+                    Summary = a.Summary,
+                    Content = a.Content,
+                    Status = a.Status,
+                    TreatmentId = a.TreatmentId,
+                    IsDeleted = a.IsDeleted,
+                    CreatedAt = a.CreatedAt,
+                    UpdatedAt = a.UpdatedAt,
+                    Images = a.Images
+                        .OrderBy(i => i.DisplayOrder)
+                        .Select(i => new ArticleImageDto
+                        {
+                            Id = i.Id,
+                            Url = i.Url,
+                            IsPrimary = i.IsPrimary,
+                            DisplayOrder = i.DisplayOrder
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync(cancellationToken);
 
-            if (article is null || article.IsDeleted)
-                return Result<SingleArticleDto>.Failure("Article not found", ErrorType.NotFound);
+            if (article is null)
+            {
+                return Result<AdminArticleDto>.Failure(
+                    "Article not found.",
+                    ErrorType.NotFound);
+            }
 
-            var mappedArticle = _mapper.Map<SingleArticleDto>(article);
-            return Result<SingleArticleDto>.Success(mappedArticle);
+            return Result<AdminArticleDto>.Success(article);
         }
     }
 }

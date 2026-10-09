@@ -11,8 +11,7 @@ namespace Clinic.Domain.Entities.treatment
         }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public string? ImageUrl { get; private set; }
-
+        public ICollection<TreatmentImage> Images { get; set; } = new List<TreatmentImage>();
         public ICollection<Article> Articles { get; set; }
      = new List<Article>();
     }

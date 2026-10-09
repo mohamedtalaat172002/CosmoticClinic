@@ -1,114 +1,404 @@
+@using System.Text.RegularExpressions
 @using Clinic.Application.Features.Treatments.Queries.Result
 @model SingleTreatmentDto
 
 @{
     ViewData["Title"] = Model.Name;
-    var articles   = Model.Articles;
+
+    var articles = Model.Articles;
     var totalPages = articles.PageSize > 0
-        ? (int)Math.Ceiling((double)articles.TotalRows / articles.PageSize) : 0;
+        ? (int)Math.Ceiling((double)articles.TotalRows / articles.PageSize)
+        : 0;
+
+    // Paragraphs are separated by a blank line (this is what the dashboard hint tells the admin).
+    var paragraphs = Regex
+        .Split((Model.Description ?? string.Empty).Trim(), @"(?:\r?\n){2,}")
+        .Select(p => p.Trim())
+        .Where(p => p.Length > 0)
+        .ToList();
+
+    // A short first paragraph becomes the lead under the title; it is removed from the body
+    // so the text is never shown twice. A long first paragraph stays in the body.
+    string? lead = null;
+    if (paragraphs.Count > 0 && paragraphs[0].Length <= 300)
+    {
+        lead = paragraphs[0];
+        paragraphs.RemoveAt(0);
+    }
+
+    var hasBody = paragraphs.Count > 0;
 }
 
-<section class="page-hero">
-    <div class="container">
-        <div class="row align-items-center">
+<style>
+    /* Clears the fixed navbar. Tune the clamp() values if your navbar height differs. */
+    .treatment-page {
+        padding-top: clamp(6.5rem, 9vw, 8.5rem);
+        padding-bottom: 4rem;
+    }
 
-            <div class="col-lg-7">
-                <p class="text-uppercase text-primary fw-bold">Treatment</p>
-                <h1>@Model.Name</h1>
-                <p class="lead">@Model.Description</p>
-                <a asp-controller="Consultations" asp-action="Create" class="btn btn-primary">
-                    Book a consultation
-                </a>
-            </div>
+    .treatment-header {
+        max-width: 860px;
+        margin: 0 auto 2.5rem;
+        text-align: center;
+    }
 
-            <div class="col-lg-5">
-                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-                {
-                    <img class="img-fluid rounded-4" src="@Model.ImageUrl" alt="@Model.Name" />
-                }
-                else
-                {
-                    <div class="placeholder-image rounded-4"><i class="bi bi-stars"></i></div>
-                }
-            </div>
+    .treatment-title {
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        font-weight: 700;
+        line-height: 1.25;
+        margin: .75rem 0 1.25rem;
+        overflow-wrap: anywhere;
+    }
 
-        </div>
-    </div>
-</section>
+    .treatment-lead {
+        font-size: 1.2rem;
+        line-height: 1.9;
+        color: #666;
+        margin: 0 auto 2rem;
+        overflow-wrap: anywhere;
+        white-space: pre-line;
+    }
 
-<section class="section">
-    <div class="container">
+    .treatment-gallery {
+        max-width: 1100px;
+        margin: 0 auto 3.5rem;
+    }
 
-        <div class="section-title">
-            <h2>Related articles</h2>
-            <p>Helpful information related to @Model.Name.</p>
-        </div>
-
-        <div class="row g-4">
-            @foreach (var article in articles.Items)
-            {
-                <div class="col-lg-4 col-md-6">
-                    <article class="article-card">
-                        <div class="placeholder-image"><i class="bi bi-journal-medical"></i></div>
-                        <div class="card-body">
-                            <h3>@article.Title</h3>
-                            <p>@article.Summary</p>
-                            <a asp-controller="Articles" asp-action="Details"
-                               asp-route-slug="@article.Slug" class="read-more">
-                                Read article <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
-                    </article>
-                </div>
-            }
-            @if (!articles.Items.Any())
-            {
-                <div class="col-12">
-                    <p class="text-center text-muted">No related articles are available yet.</p>
-                </div>
-            }
-        </div>
-
-        @if (totalPages > 1)
-        {
-            <nav class="mt-5" aria-label="Related articles pagination">
-                <ul class="pagination justify-content-center">
-                    @if (articles.PageIndex > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" asp-action="Details"
-                               asp-route-slug="@Model.Slug"
-                               asp-route-pageIndex="@(articles.PageIndex - 1)"
-                               asp-route-pageSize="@articles.PageSize">Previous</a>
-                        </li>
-                    }
-                    @for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++)
-                    {
-                        <li class="page-item @(pageNumber == articles.PageIndex ? "active" : "")">
-                            <a class="page-link" asp-action="Details"
-                               asp-route-slug="@Model.Slug"
-                               asp-route-pageIndex="@pageNumber"
-                               asp-route-pageSize="@articles.PageSize">@pageNumber</a>
-                        </li>
-                    }
-                    @if (articles.PageIndex < totalPages)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" asp-action="Details"
-                               asp-route-slug="@Model.Slug"
-                               asp-route-pageIndex="@(articles.PageIndex + 1)"
-                               asp-route-pageSize="@articles.PageSize">Next</a>
-                        </li>
-                    }
-                </ul>
-            </nav>
+        .treatment-gallery img {
+            width: 100%;
+            height: clamp(260px, 45vw, 520px);
+            object-fit: cover;
         }
 
-        <div class="mt-5">
-            <a asp-action="Index" class="read-more">
-                <i class="bi bi-arrow-left"></i> All treatments
+        .treatment-gallery .placeholder-image {
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+    /* Long-form reading column */
+    .treatment-description {
+        font-size: 1.125rem;
+        line-height: 2;
+        color: #343434;
+        text-align: start;
+        overflow-wrap: anywhere;
+    }
+
+        .treatment-description p {
+            margin-bottom: 1.6rem;
+            white-space: pre-line; /* keeps single line breaks inside a paragraph */
+        }
+
+    /* Sticky call-to-action next to the long text (desktop only) */
+    .treatment-aside {
+        position: sticky;
+        top: 7rem;
+    }
+
+    .treatment-cta {
+        padding: 2rem 1.5rem;
+        text-align: center;
+        background: #f8f7f5;
+        border-radius: 1rem;
+    }
+
+        .treatment-cta h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            overflow-wrap: anywhere;
+        }
+
+    .treatment-related {
+        margin-top: 5rem;
+    }
+
+        .treatment-related .section-title {
+            margin-bottom: 2rem;
+        }
+
+        .treatment-related .article-card {
+            height: 100%;
+        }
+
+    .treatment-related-image,
+    .treatment-related-img {
+        width: 100%;
+        height: 200px;
+    }
+
+    .treatment-related-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+    }
+
+    .treatment-related-img {
+        object-fit: cover;
+    }
+
+    .treatment-back-link {
+        display: inline-block;
+        margin-top: 2.5rem;
+    }
+
+    @@media (max-width: 991px) {
+        .treatment-aside {
+            position: static;
+        }
+    }
+
+    @@media (max-width: 767px) {
+        .treatment-header {
+            margin-bottom: 2rem;
+        }
+
+        .treatment-lead {
+            font-size: 1.05rem;
+        }
+
+        .treatment-gallery {
+            margin-bottom: 2.5rem;
+        }
+
+        .treatment-description {
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+    }
+</style>
+
+<section class="section treatment-page">
+    <div class="container">
+
+        <!-- Header -->
+        <header class="treatment-header">
+            <p class="text-uppercase text-primary fw-bold mb-0">
+                @_localizer[SharedResourcesKeys.ServiceLabel]
+            </p>
+
+            <h1 class="treatment-title">@Model.Name</h1>
+
+            @if (lead is not null)
+            {
+                <p class="treatment-lead">@lead</p>
+            }
+
+            <a asp-controller="Consultations"
+               asp-action="Create"
+               class="btn btn-primary btn-lg">
+                @_localizer[SharedResourcesKeys.BookConsultationBtn]
             </a>
+        </header>
+
+        <!-- Gallery -->
+        <div class="treatment-gallery">
+            @if (Model.Images.Any())
+            {
+                <div id="treatmentDetailsCarousel" class="carousel slide" data-bs-ride="carousel">
+
+                    @if (Model.Images.Count > 1)
+                    {
+                        <div class="carousel-indicators">
+                            @for (var i = 0; i < Model.Images.Count; i++)
+                            {
+                                <button type="button"
+                                        data-bs-target="#treatmentDetailsCarousel"
+                                        data-bs-slide-to="@i"
+                                        class="@(i == 0 ? "active" : "")"
+                                        aria-current="@(i == 0 ? "true" : "false")"
+                                        aria-label="Slide @(i + 1)">
+                                </button>
+                            }
+                        </div>
+                    }
+
+                    <div class="carousel-inner rounded-4 shadow-sm overflow-hidden">
+                        @for (var i = 0; i < Model.Images.Count; i++)
+                        {
+                            var img = Model.Images[i];
+
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@img.Url"
+                                     alt="@Model.Name"
+                                     loading="@(i == 0 ? "eager" : "lazy")" />
+                            </div>
+                        }
+                    </div>
+
+                    @if (Model.Images.Count > 1)
+                    {
+                        <button class="carousel-control-prev"
+                                type="button"
+                                data-bs-target="#treatmentDetailsCarousel"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">@_localizer[SharedResourcesKeys.Previous]</span>
+                        </button>
+
+                        <button class="carousel-control-next"
+                                type="button"
+                                data-bs-target="#treatmentDetailsCarousel"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">@_localizer[SharedResourcesKeys.Next]</span>
+                        </button>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="placeholder-image rounded-4">
+                    <i class="bi bi-stars"></i>
+                </div>
+            }
         </div>
+
+        <!-- Long-form description + sticky call to action -->
+        <div class="row g-5 @(hasBody ? "" : "justify-content-center")">
+
+            @if (hasBody)
+            {
+                <article class="col-lg-8">
+                    <div class="treatment-description">
+                        @foreach (var paragraph in paragraphs)
+                        {
+                            <p>@paragraph</p>
+                        }
+                    </div>
+                </article>
+            }
+
+            <aside class="@(hasBody ? "col-lg-4 align-self-start" : "col-lg-6")">
+                <div class="@(hasBody ? "treatment-aside" : "")">
+                    <div class="treatment-cta">
+                        <h2>@Model.Name</h2>
+
+                        <p class="text-muted mb-4">
+                            @_localizer[SharedResourcesKeys.BookConsultationBtn]
+                        </p>
+
+                        <a asp-controller="Consultations"
+                           asp-action="Create"
+                           class="btn btn-primary btn-lg w-100">
+                            @_localizer[SharedResourcesKeys.BookConsultationBtn]
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+
+        <!-- Related articles -->
+        <section class="treatment-related">
+            <div class="section-title">
+                <h2>@_localizer[SharedResourcesKeys.RelatedArticlesTitle]</h2>
+                <p>
+                    @string.Format(
+                    _localizer[SharedResourcesKeys.RelatedArticlesSub].Value,
+                                        Model.Name)
+                </p>
+            </div>
+
+            <div class="row g-4">
+                @foreach (var article in articles.Items)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <article class="article-card">
+                            @if (!string.IsNullOrWhiteSpace(article.FeaturedImageUrl.Url))
+                            {
+                                <img src="@article.FeaturedImageUrl.Url"
+                                     alt="@article.Title"
+                                     class="treatment-related-img"
+                                     loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="placeholder-image treatment-related-image">
+                                    <i class="bi bi-journal-medical"></i>
+                                </div>
+                            }
+
+                            <div class="card-body">
+                                <h3>@article.Title</h3>
+                                <p>@article.Summary</p>
+
+                                <a asp-controller="Articles"
+                                   asp-action="Details"
+                                   asp-route-slug="@article.Slug"
+                                   class="read-more">
+                                    @_localizer[SharedResourcesKeys.ReadArticle]
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                }
+
+                @if (!articles.Items.Any())
+                {
+                    <div class="col-12">
+                        <p class="text-center text-muted">
+                            @_localizer[SharedResourcesKeys.NoRelatedArticles]
+                        </p>
+                    </div>
+                }
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav class="mt-5" aria-label="Related articles pagination">
+                    <ul class="pagination justify-content-center">
+                        @if (articles.PageIndex > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                   asp-action="Details"
+                                   asp-route-slug="@Model.Slug"
+                                   asp-route-pageIndex="@(articles.PageIndex - 1)"
+                                   asp-route-pageSize="@articles.PageSize">
+                                    @_localizer[SharedResourcesKeys.Previous]
+                                </a>
+                            </li>
+                        }
+
+                        @for (var pageNumber = 1; pageNumber <= totalPages; pageNumber++)
+                        {
+                            <li class="page-item @(pageNumber == articles.PageIndex ? "active" : "")">
+                                <a class="page-link"
+                                   asp-action="Details"
+                                   asp-route-slug="@Model.Slug"
+                                   asp-route-pageIndex="@pageNumber"
+                                   asp-route-pageSize="@articles.PageSize">
+                                    @pageNumber
+                                </a>
+                            </li>
+                        }
+
+                        @if (articles.PageIndex < totalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                   asp-action="Details"
+                                   asp-route-slug="@Model.Slug"
+                                   asp-route-pageIndex="@(articles.PageIndex + 1)"
+                                   asp-route-pageSize="@articles.PageSize">
+                                    @_localizer[SharedResourcesKeys.Next]
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+
+            <a asp-action="Index" class="read-more treatment-back-link">
+                <i class="bi bi-arrow-left"></i>
+                @_localizer[SharedResourcesKeys.AllServices]
+            </a>
+        </section>
 
     </div>
 </section>

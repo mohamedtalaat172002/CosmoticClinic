@@ -1,9 +1,9 @@
-
 @model HomeViewModel
 
 @{
-    ViewData["Title"] = "Confidence starts here";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.HeroHeading].Value;
     var settings = Model.ClinicSettings;
+    const string fallbackImg = "~/assets/img/health/staff-8.webp";
 }
 
 <section id="hero" class="hero section">
@@ -16,63 +16,51 @@
                     <div class="trust-badges mb-4">
                         <div class="badge-item">
                             <i class="bi bi-patch-check"></i>
-                            <span>Personalized care</span>
+                            <span>@_localizer[SharedResourcesKeys.HeroBadgeCare]</span>
                         </div>
                         <div class="badge-item">
                             <i class="bi bi-heart-pulse"></i>
-                            <span>Trusted specialists</span>
+                            <span>@_localizer[SharedResourcesKeys.HeroBadgeSpecialists]</span>
                         </div>
                     </div>
 
                     <h1>
-                        Refined care for your
-                        <span class="highlight">natural confidence</span>
+                        @_localizer[SharedResourcesKeys.HeroHeading]
+                        <span class="highlight">@_localizer[SharedResourcesKeys.HeroHeadingHighlight]</span>
                     </h1>
 
-                    <p class="hero-description">
-                        A calm, considered approach to aesthetic treatments — with your goals
-                        and comfort at the center of every visit.
-                    </p>
+                    <p class="hero-description">@_localizer[SharedResourcesKeys.HeroDescription]</p>
 
                     <div class="hero-actions">
-                        <a asp-controller="Consultations"
-                           asp-action="Create"
-                           class="btn btn-primary">
-                            Book a consultation <i class="bi bi-arrow-right"></i>
+                        <a asp-controller="Consultations" asp-action="Create" class="btn btn-primary">
+                            @_localizer[SharedResourcesKeys.BookConsultation] <i class="bi bi-arrow-right"></i>
                         </a>
+                        <a asp-controller="Treatments" asp-action="Index" class="btn btn-outline">
+                            @_localizer[SharedResourcesKeys.HeroExploreServices]
+                        </a>
+                    </div>
 
-                        <a asp-controller="Treatments"
-                           asp-action="Index"
-                           class="btn btn-outline">
-                            Explore treatments
-                        </a>
+                    <div class="emergency-contact aos-init aos-animate" data-aos="fade-right" data-aos-delay="700">
+                        <div class="emergency-icon"><i class="bi bi-telephone-fill"></i></div>
+                        <div class="emergency-info">
+                            <small>@_localizer[SharedResourcesKeys.EmergencyHotline]</small>
+                            <strong>@settings?.WhatsAppNumber</strong>
+                        </div>
                     </div>
 
                     <div class="hero-search mt-4">
                         <form id="heroSearchForm" method="get" action="/Treatments">
                             <div class="input-group">
-
-                                <input type="text"
-                                       name="search"
-                                       class="form-control"
-                                       placeholder="Search treatments or articles…"
+                                <input type="text" name="search" class="form-control"
+                                       placeholder="@_localizer[SharedResourcesKeys.HeroSearchPlaceholder]"
                                        aria-label="Search" />
-
-                                <select id="searchTarget"
-                                        class="form-select"
-                                        style="max-width: 140px;"
-                                        aria-label="Search in">
-                                    <option value="/Treatments">Treatments</option>
-                                    <option value="/Articles">Articles</option>
+                                <select id="searchTarget" class="form-select" style="max-width: 140px;" aria-label="Search in">
+                                    <option value="/Treatments">@_localizer[SharedResourcesKeys.Services]</option>
+                                    <option value="/Articles">@_localizer[SharedResourcesKeys.Articles]</option>
                                 </select>
-
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="bi bi-search"></i>
-                                </button>
-
+                                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
                             </div>
                         </form>
-
                         <script>
                             document.getElementById('searchTarget').addEventListener('change', function () {
                                 document.getElementById('heroSearchForm').action = this.value;
@@ -84,18 +72,57 @@
             </div>
 
             <div class="col-lg-6">
-                <div class="hero-image">
-                    @if (!string.IsNullOrWhiteSpace(settings?.HeroImageUrl))
+                <div class="hero-image-wrapper shadow-sm">
+                    @if (Model.HeroImages.Any())
+                    {
+                        <div id="clinicHeroCarousel" class="carousel slide" data-bs-ride="carousel">
+                            @if (Model.HeroImages.Count > 1)
+                            {
+                                <div class="carousel-indicators">
+                                    @for (var i = 0; i < Model.HeroImages.Count; i++)
+                                    {
+                                        <button type="button" data-bs-target="#clinicHeroCarousel" data-bs-slide-to="@i"
+                                                class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")"
+                                                aria-label="Slide @(i + 1)"></button>
+                                    }
+                                </div>
+                            }
+                            <div class="carousel-inner">
+                                @for (var i = 0; i < Model.HeroImages.Count; i++)
+                                {
+                                    var heroImg = Model.HeroImages[i];
+                                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                                        <img src="@heroImg.Url"
+                                             class="hero-image"
+                                             alt="@(settings?.DoctorName ?? "Clinic specialist")"
+                                             loading="@(i == 0 ? "eager" : "lazy")"
+                                             onerror="this.onerror=null;this.src='@Url.Content(fallbackImg)';" />
+                                    </div>
+                                }
+                            </div>
+                            @if (Model.HeroImages.Count > 1)
+                            {
+                                <button class="carousel-control-prev" type="button" data-bs-target="#clinicHeroCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">@_localizer[SharedResourcesKeys.Previous]</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#clinicHeroCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">@_localizer[SharedResourcesKeys.Next]</span>
+                                </button>
+                            }
+                        </div>
+                    }
+                    else if (!string.IsNullOrWhiteSpace(settings?.HeroImageUrl))
                     {
                         <img src="@settings.HeroImageUrl"
-                             class="img-fluid"
-                             alt="@(settings.DoctorName ?? "Clinic specialist")" />
+                             class="hero-image"
+                             alt="@(settings.DoctorName ?? "Clinic specialist")"
+                             onerror="this.onerror=null;this.src='@Url.Content(fallbackImg)';" />
                     }
                     else
                     {
-                        <img src="~/assets/img/health/staff-8.webp"
-                             class="img-fluid"
-                             alt="Clinic specialist" />
+                        <img src="@Url.Content(fallbackImg)" class="hero-image" alt="Clinic specialist" />
                     }
                 </div>
             </div>
@@ -104,37 +131,76 @@
     </div>
 </section>
 
+<section id="home-about" class="home-about section">
+    <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0 aos-init aos-animate" data-aos="fade-right" data-aos-delay="200">
+                <div class="about-content">
+                    <h2 class="section-heading">@_localizer[SharedResourcesKeys.AboutHeading]</h2>
+                    <p class="lead-text">@_localizer[SharedResourcesKeys.AboutLead]</p>
+                    <p>@_localizer[SharedResourcesKeys.AboutBody]</p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">@_localizer[SharedResourcesKeys.AboutStat1Number]</div>
+                            <div class="stat-label">@_localizer[SharedResourcesKeys.AboutStat1Label]</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">@_localizer[SharedResourcesKeys.AboutStat2Number]</div>
+                            <div class="stat-label">@_localizer[SharedResourcesKeys.AboutStat2Label]</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">@_localizer[SharedResourcesKeys.AboutStat3Number]</div>
+                            <div class="stat-label">@_localizer[SharedResourcesKeys.AboutStat3Label]</div>
+                        </div>
+                    </div>
+                    <div class="cta-section">
+                        <a href="/Home/About" class="btn-primary">@_localizer[SharedResourcesKeys.AboutCta]</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 aos-init aos-animate" data-aos="fade-left" data-aos-delay="300">
+                <div class="about-visual">
+                    <div class="main-image">
+                        <img src="~/assets/img/health/facilities-9.webp"
+                             alt="Our cosmetic clinic"
+                             class="img-fluid section-img"
+                             loading="lazy" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Treatments -->
+@* Treatments section *@
 <section class="section">
     <div class="container">
-
         <div class="section-title" data-aos="fade-up">
-            <h2>Our treatments</h2>
-            <p>Choose care designed around you.</p>
+            <h2>@_localizer[SharedResourcesKeys.ServicesTitle]</h2>
+            <p>@_localizer[SharedResourcesKeys.ServicesSub]</p>
         </div>
 
         <div class="row g-4">
-
             @foreach (var item in Model.Treatments)
             {
-                <div class="col-md-4" data-aos="fade-up">
-                    <article class="service-card">
-
+                <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up">
+                    <article class="service-card home-card">
                         @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                         {
                             <img src="@item.ImageUrl"
-                                 alt="@item.Name" />
+                                 alt="@item.Name"
+                                 class="card-img-top card-media"
+                                 loading="lazy" />
                         }
                         else
                         {
-                            <div class="placeholder-image">
+                            <div class="placeholder-image home-card-placeholder card-media">
                                 <i class="bi bi-stars"></i>
                             </div>
                         }
 
                         <div class="card-body">
-                            <h3>@item.Name</h3>
+                            <h3 title="@item.Name">@item.Name</h3>
 
                             <p>@item.Description</p>
 
@@ -142,69 +208,144 @@
                                asp-action="Details"
                                asp-route-slug="@item.Slug"
                                class="read-more">
-                                Learn more
+                                @_localizer[SharedResourcesKeys.LearnMore]
                                 <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
-
                     </article>
                 </div>
             }
 
             @if (!Model.Treatments.Any())
             {
-                <p class="text-center text-muted">
-                    Treatments will appear here soon.
-                </p>
+                <div class="col-12">
+                    <p class="text-center text-muted">
+                        @_localizer[SharedResourcesKeys.ServicesEmpty]
+                    </p>
+                </div>
             }
-
         </div>
 
         <div class="text-center mt-5">
             <a class="btn btn-outline-primary"
                asp-controller="Treatments"
                asp-action="Index">
-                View all treatments
+                @_localizer[SharedResourcesKeys.ViewAllServices]
             </a>
         </div>
-
     </div>
 </section>
 
+<section id="call-to-action" class="call-to-action section light-background">
+    <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+        <div class="hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="content-wrapper aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                        <h1>@_localizer[SharedResourcesKeys.CtaHeading]</h1>
+                        <p>@_localizer[SharedResourcesKeys.CtaBody]</p>
+                        <div class="cta-wrapper">
+                            <a asp-controller="Consultations" asp-action="Create" class="primary-cta">
+                                <span>@_localizer[SharedResourcesKeys.CtaBookBtn]</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                            <a asp-controller="Treatments" asp-action="Index" class="secondary-cta">
+                                <span>@_localizer[SharedResourcesKeys.CtaExploreBtn]</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="image-container aos-init aos-animate" data-aos="fade-left" data-aos-delay="300">
+                        <img src="~/assets/img/health/facilities-9.webp"
+                             alt="Cosmetic service and care"
+                             class="img-fluid section-img"
+                             loading="lazy" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="features-section">
+            <div class="row g-0">
+                <div class="col-lg-4">
+                    <div class="feature-block" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-icon"><i class="bi bi-person-check"></i></div>
+                        <h3>@_localizer[SharedResourcesKeys.CtaFeat1Title]</h3>
+                        <p>@_localizer[SharedResourcesKeys.CtaFeat1Body]</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-block" data-aos="fade-up" data-aos-delay="300">
+                        <div class="feature-icon"><i class="bi bi-stars"></i></div>
+                        <h3>@_localizer[SharedResourcesKeys.CtaFeat2Title]</h3>
+                        <p>@_localizer[SharedResourcesKeys.CtaFeat2Body]</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-block" data-aos="fade-up" data-aos-delay="400">
+                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                        <h3>@_localizer[SharedResourcesKeys.CtaFeat3Title]</h3>
+                        <p>@_localizer[SharedResourcesKeys.CtaFeat3Body]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contact-block">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="contact-content" data-aos="fade-up" data-aos-delay="200">
+                        <h2>@_localizer[SharedResourcesKeys.CtaReadyHeading]</h2>
+                        <p>@_localizer[SharedResourcesKeys.CtaReadyBody]</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="contact-actions" data-aos="fade-up" data-aos-delay="300">
+                        <a asp-controller="Consultations" asp-action="Create" class="emergency-call">
+                            <i class="bi bi-chat-dots"></i>
+                            <span>@_localizer[SharedResourcesKeys.CtaRequestBtn]</span>
+                        </a>
+                        <a asp-controller="Contact" asp-action="Index" class="contact-link">
+                            @_localizer[SharedResourcesKeys.CtaContactLink]
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Articles -->
+@* Articles section *@
 <section class="section light-background">
     <div class="container">
-
         <div class="section-title" data-aos="fade-up">
-            <h2>Clinic journal</h2>
-            <p>Helpful guidance for your skin and self-care journey.</p>
+            <h2>@_localizer[SharedResourcesKeys.JournalTitle]</h2>
+            <p>@_localizer[SharedResourcesKeys.JournalSub]</p>
         </div>
 
-        <div class="row g-3">
-
+        <div class="row g-4">
             @foreach (var article in Model.Articles)
             {
-                <div class="col-md-4 col-lg-4" data-aos="fade-up">
+                var primaryArticleImg = article.FeaturedImageUrl?.Url;
 
-                    <article class="article-card">
-
-                        @if (!string.IsNullOrWhiteSpace(article.FeaturedImageUrl))
+                <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up">
+                    <article class="article-card home-card">
+                        @if (!string.IsNullOrWhiteSpace(primaryArticleImg))
                         {
-                            <img src="@article.FeaturedImageUrl"
+                            <img src="@primaryArticleImg"
                                  alt="@article.Title"
-                                 class="img-fluid" />
+                                 class="card-img-top card-media"
+                                 loading="lazy" />
                         }
                         else
                         {
-                            <div class="placeholder-image">
+                            <div class="placeholder-image home-card-placeholder card-media">
                                 <i class="bi bi-journal-medical"></i>
                             </div>
                         }
 
                         <div class="card-body">
-
-                            <h3>@article.Title</h3>
+                            <h3 title="@article.Title">@article.Title</h3>
 
                             <p>@article.Summary</p>
 
@@ -212,33 +353,30 @@
                                asp-action="Details"
                                asp-route-slug="@article.Slug"
                                class="read-more">
-                                Read article
+                                @_localizer[SharedResourcesKeys.ReadArticle]
                                 <i class="bi bi-arrow-right"></i>
                             </a>
-
                         </div>
-
                     </article>
-
                 </div>
             }
 
             @if (!Model.Articles.Any())
             {
-                <p class="text-center text-muted">
-                    Articles will appear here soon.
-                </p>
+                <div class="col-12">
+                    <p class="text-center text-muted">
+                        @_localizer[SharedResourcesKeys.JournalEmpty]
+                    </p>
+                </div>
             }
-
         </div>
 
         <div class="text-center mt-4">
             <a class="btn btn-outline-primary"
                asp-controller="Articles"
                asp-action="Index">
-                View all articles
+                @_localizer[SharedResourcesKeys.ViewAllArticles]
             </a>
         </div>
-
     </div>
 </section>

@@ -16,14 +16,12 @@ namespace Clinic.Domain.Entities.artical
 
         public string Content { get; set; } = string.Empty;
 
-        public string? FeaturedImageUrl { get; set; }
 
         public ArticleStatus Status { get; set; }
 
         public DateTime? PublishedAt { get; set; }
 
-        //public Guid WriterId { get; set; }
-
+        public ICollection<ArticleImage> Images { get; set; } = new List<ArticleImage>();
         public Guid? TreatmentId { get; set; }
 
         public Treatment? Treatment { get; set; }

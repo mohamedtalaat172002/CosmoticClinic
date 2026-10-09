@@ -1,25 +1,206 @@
 @using Clinic.Application.Features.Articles.Queries.Result
 @model SingleArticleDto
 
-@{ ViewData["Title"] = Model.Title; }
+@{
+    ViewData["Title"] = Model.Title;
 
-<section class="page-hero">
-    <div class="container text-center">
-        <p class="text-uppercase text-primary fw-bold">Clinic journal</p>
-        <h1>@Model.Title</h1>
-        <p class="lead">@Model.Summary</p>
+    var contentParagraphs = (Model.Content ?? string.Empty)
+        .Split(
+            new[] { "\r\n\r\n", "\n\n" },
+            StringSplitOptions.RemoveEmptyEntries
+        );
+}
+
+<style>
+    .article-header {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .article-title {
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        font-weight: 700;
+        line-height: 1.3;
+        margin: 1.25rem 0;
+        overflow-wrap: anywhere;
+    }
+
+    .article-summary {
+        max-width: 780px;
+        margin: 0 auto;
+        color: #666;
+        font-size: 1.2rem;
+        line-height: 1.9;
+        overflow-wrap: anywhere;
+    }
+
+    .article-gallery {
+        max-width: 1100px;
+        margin: 3rem auto 4rem;
+    }
+
+        .article-gallery img {
+            display: block;
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+        }
+
+    .article-content-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .article-content {
+        color: #343434;
+        font-size: 1.125rem;
+        line-height: 2;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+        .article-content p {
+            margin-bottom: 1.75rem;
+            white-space: pre-line;
+        }
+
+    .article-footer {
+        max-width: 800px;
+        margin: 4rem auto 0;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e9e9e9;
+    }
+
+    @@media (max-width: 767px) {
+        .article-gallery
+
+    {
+        margin: 2rem auto 2.5rem;
+    }
+
+    .article-gallery img {
+        height: 300px;
+    }
+
+    .article-summary {
+        font-size: 1.05rem;
+    }
+
+    .article-content {
+        font-size: 1.05rem;
+        line-height: 1.9;
+    }
+
+    }
+</style>
+
+<!-- Article Header -->
+<section class="section pb-0">
+    <div class="container">
+        <header class="article-header">
+            <p class="text-uppercase text-primary fw-bold mb-3">
+                @_localizer[SharedResourcesKeys.ClinicJournal]
+            </p>
+
+            <h1 class="article-title">
+                @Model.Title
+            </h1>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Summary))
+            {
+                <p class="article-summary">
+                    @Model.Summary
+                </p>
+            }
+        </header>
     </div>
 </section>
 
-<section class="section">
-    <article class="container" style="max-width: 850px;">
-        @if (!string.IsNullOrWhiteSpace(Model.FeaturedImageUrl))
-        {
-            <img class="img-fluid rounded-4 mb-5" src="@Model.FeaturedImageUrl" alt="@Model.Title" />
-        }
-        <div class="detail-content">@Model.Content</div>
-        <a asp-action="Index" class="read-more d-inline-block mt-5">
-            <i class="bi bi-arrow-left"></i> All articles
-        </a>
-    </article>
+<!-- Article Images -->
+@if (Model.Images.Any())
+{
+    <section class="container">
+        <div class="article-gallery">
+            <div id="articleDetailsCarousel"
+                 class="carousel slide"
+                 data-bs-ride="carousel">
+
+                @if (Model.Images.Count > 1)
+                {
+                    <div class="carousel-indicators">
+                        @for (var i = 0; i < Model.Images.Count; i++)
+                        {
+                            <button type="button"
+                                    data-bs-target="#articleDetailsCarousel"
+                                    data-bs-slide-to="@i"
+                                    class="@(i == 0 ? "active" : "")"
+                                    aria-current="@(i == 0 ? "true" : "false")"
+                                    aria-label="Slide @(i + 1)">
+                            </button>
+                        }
+                    </div>
+                }
+
+                <div class="carousel-inner rounded-4 shadow-sm overflow-hidden">
+                    @for (var i = 0; i < Model.Images.Count; i++)
+                    {
+                        var image = Model.Images[i];
+
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img src="@image.Url"
+                                 alt="@Model.Title"
+                                 loading="@(i == 0 ? "eager" : "lazy")" />
+                        </div>
+                    }
+                </div>
+
+                @if (Model.Images.Count > 1)
+                {
+                    <button class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#articleDetailsCarousel"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"
+                              aria-hidden="true"></span>
+                        <span class="visually-hidden">
+                            @_localizer[SharedResourcesKeys.Previous]
+                        </span>
+                    </button>
+
+                    <button class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#articleDetailsCarousel"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon"
+                              aria-hidden="true"></span>
+                        <span class="visually-hidden">
+                            @_localizer[SharedResourcesKeys.Next]
+                        </span>
+                    </button>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Article Body -->
+<section class="section pt-0">
+    <div class="container">
+        <article class="article-content-wrapper">
+            <div class="article-content">
+                @foreach (var paragraph in contentParagraphs)
+                {
+                    <p>@paragraph.Trim()</p>
+                }
+            </div>
+
+            <footer class="article-footer">
+                <a asp-action="Index" class="read-more">
+                    <i class="bi bi-arrow-left"></i>
+                    @_localizer[SharedResourcesKeys.AllArticlesLink]
+                </a>
+            </footer>
+        </article>
+    </div>
 </section>

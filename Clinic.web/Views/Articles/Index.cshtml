@@ -1,20 +1,17 @@
-
 @using Clinic.Application.Features.Articles.Queries.Result
 @model Clinic.Application.Abstractions.Queries.PagedResult<AllArticlesDto>
 
 @{
-    ViewData["Title"] = "Articles";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.ArticlesPageTitle].Value;
     var search = Context.Request.Query["search"].ToString();
-
     var totalPages = Model.PageSize > 0
-        ? (int)Math.Ceiling((double)Model.TotalRows / Model.PageSize)
-        : 0;
+        ? (int)Math.Ceiling((double)Model.TotalRows / Model.PageSize) : 0;
 }
 
 <section class="page-hero">
     <div class="container text-center">
-        <h1>Clinic journal</h1>
-        <p class="lead mb-0">Thoughtful insights for confident care.</p>
+        <h1>@_localizer[SharedResourcesKeys.ArticlesPageTitle]</h1>
+        <p class="lead mb-0">@_localizer[SharedResourcesKeys.ArticlesPageSub]</p>
     </div>
 </section>
 
@@ -23,127 +20,87 @@
 
         <form method="get" asp-action="Index" class="mb-5">
             <div class="input-group" style="max-width: 480px; margin: 0 auto;">
-
-                <input type="text"
-                       name="search"
-                       value="@search"
-                       class="form-control"
-                       placeholder="Search articles…"
+                <input type="text" name="search" value="@search" class="form-control"
+                       placeholder="@_localizer[SharedResourcesKeys.SearchArticlesPlaceholder]"
                        aria-label="Search articles" />
-
-                <input type="hidden"
-                       name="pageSize"
-                       value="@Model.PageSize" />
-
-                <button class="btn btn-primary" type="submit">
-                    <i class="bi bi-search"></i>
-                </button>
-
+                <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
             </div>
         </form>
 
         <div class="row g-4">
-
             @foreach (var article in Model.Items)
             {
                 <div class="col-lg-4 col-md-6">
-
                     <article class="article-card">
-
-                        @if (!string.IsNullOrWhiteSpace(article.FeaturedImageUrl))
+                        @if (!string.IsNullOrWhiteSpace(article.FeaturedImageUrl.Url))
                         {
-                            <img src="@article.FeaturedImageUrl"
-                                 alt="@article.Title"
-                                 class="img-fluid" />
+                            <img src="@article.FeaturedImageUrl.Url" alt="@article.Title" class="card-img-top card-media" />
                         }
                         else
                         {
-                            <div class="placeholder-image">
-                                <i class="bi bi-journal-medical"></i>
-                            </div>
+                            <div class="placeholder-image"><i class="bi bi-journal-medical"></i></div>
                         }
-
                         <div class="card-body">
-
                             <h3>@article.Title</h3>
-
                             <p>@article.Summary</p>
-
-                            <a asp-action="Details"
-                               asp-route-slug="@article.Slug"
-                               class="read-more">
-                                Read article
-                                <i class="bi bi-arrow-right"></i>
+                            <a asp-action="Details" asp-route-slug="@article.Slug" class="read-more">
+                                @_localizer[SharedResourcesKeys.ReadArticle] <i class="bi bi-arrow-right"></i>
                             </a>
-
                         </div>
-
                     </article>
-
                 </div>
             }
-
             @if (!Model.Items.Any())
             {
                 <div class="col-12">
                     <p class="text-center text-muted">
                         @(string.IsNullOrWhiteSpace(search)
-                                            ? "No articles are available yet."
-                                            : $"No articles found for \"{search}\".")
-                </p>
-            </div>
-                        }
-
+                            ? _localizer[SharedResourcesKeys.NoArticlesAvailable].Value
+                            : string.Format(_localizer[SharedResourcesKeys.NoArticlesFound].Value, search))
+                    </p>
+                </div>
+            }
         </div>
 
         @if (totalPages > 1)
         {
             <nav class="mt-5" aria-label="Articles pagination">
                 <ul class="pagination justify-content-center">
-
                     @if (Model.PageIndex > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link"
-                               asp-action="Index"
+                            <a class="page-link" asp-action="Index"
                                asp-route-search="@search"
                                asp-route-pageIndex="@(Model.PageIndex - 1)"
                                asp-route-pageSize="@Model.PageSize">
-                                Previous
+                                @_localizer[SharedResourcesKeys.Previous]
                             </a>
                         </li>
                     }
-
                     @for (var pageNum = 1; pageNum <= totalPages; pageNum++)
                     {
                         <li class="page-item @(pageNum == Model.PageIndex ? "active" : "")">
-                            <a class="page-link"
-                               asp-action="Index"
+                            <a class="page-link" asp-action="Index"
                                asp-route-search="@search"
                                asp-route-pageIndex="@pageNum"
-                               asp-route-pageSize="@Model.PageSize">
-                                @pageNum
-                            </a>
+                               asp-route-pageSize="@Model.PageSize">@pageNum</a>
                         </li>
                     }
-
                     @if (Model.PageIndex < totalPages)
                     {
                         <li class="page-item">
-                            <a class="page-link"
-                               asp-action="Index"
+                            <a class="page-link" asp-action="Index"
                                asp-route-search="@search"
                                asp-route-pageIndex="@(Model.PageIndex + 1)"
                                asp-route-pageSize="@Model.PageSize">
-                                Next
+                                @_localizer[SharedResourcesKeys.Next]
                             </a>
                         </li>
                     }
-
                 </ul>
             </nav>
         }
 
     </div>
 </section>
-

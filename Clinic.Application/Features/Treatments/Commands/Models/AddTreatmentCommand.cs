@@ -5,8 +5,14 @@ using MediatR;
 namespace Clinic.Application.Features.Treatments.Commands.Models
 {
     public sealed record AddTreatmentCommand(
-     string Name,
-     string Description,
-     string? ImageUrl
- ) : IRequest<Result<UpdateCreateSingleTreatmentDto>>;
+        string Name,
+        string Description,
+        IReadOnlyCollection<TreatmentImageUpload> Images
+    ) : IRequest<Result<UpdateCreateSingleTreatmentDto>>;
+
+
+    public sealed record TreatmentImageUpload(
+        Stream FileStream,
+        string FileName
+    );
 }

@@ -38,10 +38,11 @@ public sealed class TreatmentsController(IMediator mediator) : Controller
         int pageSize = 6,
         CancellationToken cancellationToken = default)
     {
+        // The handler already loads all images (ordered by DisplayOrder, primary first)
+        // and the paged articles, so no repository fallback is needed.
         var result = await mediator.Send(
-            new GetTreatmentBySlugQuery
+            new GetTreatmentBySlugQuery(slug)
             {
-                Slug = slug,
                 Search = search,
                 PageIndex = pageIndex,
                 PageSize = pageSize
@@ -51,6 +52,6 @@ public sealed class TreatmentsController(IMediator mediator) : Controller
         if (!result.IsSuccess || result.Value is null)
             return NotFound();
 
-        return View(result.Value);
+        return View(result.Value); // @model SingleTreatmentDto
     }
 }

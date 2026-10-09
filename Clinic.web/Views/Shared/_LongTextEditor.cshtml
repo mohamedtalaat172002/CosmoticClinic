@@ -1,0 +1,100 @@
+@*
+    Progressive enhancement for long-form textareas (treatment descriptions, article content).
+
+    Opt-in per textarea with the data-long-text attribute:
+        <textarea asp-for="Description" class="form-control long-text-field" dir="auto" rows="16"
+                  data-long-text
+                  data-max-words="2000"          (optional, visual guide only, never blocks saving)
+                  data-words-label="words"       (optional, override for localization)
+                  data-chars-label="characters"></textarea>
+
+    Gives: live word / character counter, auto-growing height, and a warning before
+    leaving the page with unsaved text (a 2000-word draft is expensive to lose).
+*@
+
+<style>
+    .long-text-field {
+        min-height: 320px;
+        max-height: 70vh;
+        overflow-y: auto;
+        line-height: 1.85;
+        resize: vertical;
+    }
+
+    .long-text-counter {
+        font-variant-numeric: tabular-nums;
+    }
+</style>
+
+<script>
+    (function () {
+        var fields = document.querySelectorAll('textarea[data-long-text]');
+        if (!fields.length) return;
+
+        var dirty = false;
+        var submitting = false;
+        var wiredForms = [];
+        var numberFormat = new Intl.NumberFormat();
+
+        function wireForm(form) {
+            if (!form || wiredForms.indexOf(form) !== -1) return;
+            wiredForms.push(form);
+
+            form.addEventListener('input', function () { dirty = true; });
+            form.addEventListener('change', function () { dirty = true; });
+
+            form.addEventListener('submit', function (e) {
+                submitting = true;
+                // If client-side validation blocked the submit, the user is still on the page.
+                setTimeout(function () { if (e.defaultPrevented) submitting = false; }, 0);
+            });
+        }
+
+        fields.forEach(function (textarea) {
+            var wordsLabel = textarea.dataset.wordsLabel || 'words';
+            var charsLabel = textarea.dataset.charsLabel || 'characters';
+            var maxWords = parseInt(textarea.dataset.maxWords || '0', 10);
+
+            var counter = document.createElement('div');
+            counter.className = 'form-text d-flex justify-content-between long-text-counter';
+            var wordsSpan = document.createElement('span');
+            var charsSpan = document.createElement('span');
+            counter.appendChild(wordsSpan);
+            counter.appendChild(charsSpan);
+            textarea.insertAdjacentElement('afterend', counter);
+
+            function grow() {
+                textarea.style.height = 'auto';
+                var limit = window.innerHeight * 0.7;
+                textarea.style.height = Math.min(textarea.scrollHeight + 2, limit) + 'px';
+            }
+
+            function update() {
+                var text = textarea.value.trim();
+                var words = text ? text.split(/\s+/).length : 0;
+
+                wordsSpan.textContent = maxWords > 0
+                    ? numberFormat.format(words) + ' / ' + numberFormat.format(maxWords) + ' ' + wordsLabel
+                    : numberFormat.format(words) + ' ' + wordsLabel;
+
+                charsSpan.textContent = numberFormat.format(textarea.value.length) + ' ' + charsLabel;
+
+                wordsSpan.classList.toggle('text-danger', maxWords > 0 && words > maxWords);
+                grow();
+            }
+
+            textarea.addEventListener('input', update);
+            window.addEventListener('resize', grow);
+            update();
+
+            wireForm(textarea.form);
+        });
+
+        window.addEventListener('beforeunload', function (e) {
+            if (dirty && !submitting) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    })();
+</script>

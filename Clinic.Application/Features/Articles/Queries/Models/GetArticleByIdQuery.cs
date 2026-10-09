@@ -4,9 +4,6 @@ using MediatR;
 
 namespace Clinic.Application.Features.Articles.Queries.Models
 {
-    public sealed record GetArticleByIdQuery
-        (Guid id) : IRequest<Result<SingleArticleDto>>
-    {
-    }
-
+    public sealed record GetArticleByIdQuery(Guid Id)
+        : IRequest<Result<AdminArticleDto>>;
 }

@@ -8,7 +8,11 @@ namespace Clinic.Application.Mappings.TreatmentMapping
     {
         public void GetAllTreatmentsMapping()
         {
-            CreateMap<Treatment, AllTreatmentsDto>();
+            CreateMap<Treatment, AllTreatmentsDto>().
+                ForMember(dest => dest.ImageUrl,
+                opt => opt.MapFrom(src => src.Images
+                .Where(x => x.IsPrimary)
+                .Select(x => x.Url).FirstOrDefault()));
         }
     }
 

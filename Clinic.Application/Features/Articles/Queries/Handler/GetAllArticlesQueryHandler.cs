@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Clinic.Application.Abstractions.Queries;
+﻿using Clinic.Application.Abstractions.Queries;
 using Clinic.Application.Common.ResponseFormat;
 using Clinic.Application.Features.Articles.Queries.Models;
 using Clinic.Application.Features.Articles.Queries.Result;
@@ -9,43 +8,67 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clinic.Application.Features.Articles.Queries.Handler
 {
-    internal sealed class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, Result<PagedResult<AllArticlesDto>>>
+    internal sealed class GetAllArticlesQueryHandler
+        : IRequestHandler<GetAllArticlesQuery, Result<PagedResult<AllArticlesDto>>>
     {
         private readonly IArticleReadRepository _articleReadRepository;
-        private readonly IMapper _mapper;
-        public GetAllArticlesQueryHandler(IArticleReadRepository articleReadRepository, IMapper mapper)
+
+        public GetAllArticlesQueryHandler(IArticleReadRepository articleReadRepository)
         {
             _articleReadRepository = articleReadRepository;
-            _mapper = mapper;
         }
 
-        public async Task<Result<PagedResult<AllArticlesDto>>> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResult<AllArticlesDto>>> Handle(
+            GetAllArticlesQuery request,
+            CancellationToken cancellationToken)
         {
-            var pageIndex = request.PageIndex ?? 1;
-            var pageSize = request.PageSize ?? 10;
+            // Deleted articles never enter the count or the list.
+            // Same filtered query feeds both => TotalCount always matches the list.
+            var filtered = _articleReadRepository.ApplyFilters(
+                _articleReadRepository
+                    .GetAll()
+                    .Where(a => !a.IsDeleted),
+                request);
 
-            var query = _articleReadRepository.GetAll();
-            var totalCount = await query.Where(a => !a.IsDeleted).CountAsync(cancellationToken);
+            var totalCount = await filtered.CountAsync(cancellationToken);
 
+            // Order BEFORE paging; ThenBy(Id) keeps the order stable between pages.
+            var ordered = filtered
+                .OrderByDescending(a => a.CreatedAt)
+                .ThenBy(a => a.Id);
 
-
-            query = _articleReadRepository.GetAllBySearchCriteria(query, request);
-            if (query is null)
-                return Result<PagedResult<AllArticlesDto>>.Failure("Articles not found", ErrorType.NotFound);
-            var articles = await query.OrderBy(p => p.CreatedAt)
+            // Only the columns needed + the primary image URL (subquery, no Include).
+            var items = await _articleReadRepository
+                .ApplyPaging(ordered, request)
+                .Select(a => new AllArticlesDto
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Slug = a.Slug,
+                    Summary = a.Summary,
+                    Status = a.Status,
+                    FeaturedImageUrl = a.Images
+                        .Where(i => i.IsPrimary)
+                        .Select(i => new ArticleImageDto
+                        {
+                            Id = i.Id,
+                            Url = i.Url,
+                            IsPrimary = i.IsPrimary,
+                            DisplayOrder = i.DisplayOrder
+                        })
+                        .FirstOrDefault()
+                })
                 .ToListAsync(cancellationToken);
 
-            var dtos = _mapper.Map<List<AllArticlesDto>>(articles);
-
-
             var pagedResult = new PagedResult<AllArticlesDto>(
-                dtos.AsReadOnly(),
+                items.AsReadOnly(),
                 totalCount,
-                pageIndex,
-                pageSize
-            );
+                request.NormalizedPageIndex,
+                request.NormalizedPageSize);
 
-            return Result<PagedResult<AllArticlesDto>>.Success(pagedResult, "Articles retrieved successfully");
+            return Result<PagedResult<AllArticlesDto>>.Success(
+                pagedResult,
+                "Articles retrieved successfully");
         }
     }
 }

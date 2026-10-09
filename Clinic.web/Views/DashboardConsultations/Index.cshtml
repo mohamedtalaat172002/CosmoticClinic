@@ -1,50 +1,84 @@
 ﻿@using Clinic.Application.Features.Consultations.Queries.Result
 @using Clinic.Domain.Entities.consultation
-
 @model Clinic.Application.Abstractions.Queries.PagedResult<AllConsultationsDto>
 
 @{
-    ViewData["Title"] = "Consultations";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.DashConPageTitle].Value;
     Layout = "_DashboardLayout";
 
     var search = Context.Request.Query["search"].ToString();
     var selectedStatus = Context.Request.Query["status"].ToString();
 
     var totalPages = Model.PageSize > 0
-        ? (int)Math.Ceiling(
-            (double)Model.TotalRows / Model.PageSize)
+        ? (int)Math.Ceiling((double)Model.TotalRows / Model.PageSize)
         : 0;
 }
 
 <div class="container-fluid">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Page Header -->
+    <div class="text-center mb-4">
 
-        <div>
-            <h4 class="mb-1 fw-semibold">
-                Consultations
-            </h4>
+        <h1 class="fw-bold display-6 mb-2">
+            @_localizer[SharedResourcesKeys.DashConPageTitle]
+        </h1>
 
-            <p class="text-muted mb-0">
-                Manage consultation requests from your website.
-            </p>
-        </div>
+        <p class="text-muted fs-5 mb-3">
+            @_localizer[SharedResourcesKeys.DashConPageSub]
+        </p>
 
     </div>
 
+    <!-- Search & Filter -->
+    <div class="hero-search mb-4">
 
-    <!-- Search + Status Filter -->
+        <form method="get" asp-action="Index">
 
-    <div class="hero-search mb-4"> <form method="get" asp-action="Index"> <div class="input-group"> <input type="text" name="search" value="@search" class="form-control" placeholder="Search consultations…" aria-label="Search consultations" /> <select name="status" class="form-select" style="max-width: 160px;" aria-label="Filter by status"> <option value=""> All Statuses </option> @foreach (var status in Enum.GetValues<ConsultationStatus>()) {
-    <option value="@status" selected="@(selectedStatus == status.ToString())"> @status </option>
-        }
-                </select> <input type="hidden" name="pageSize" value="@Model.PageSize" /> <button class="btn btn-primary" type="submit"> <i  color ="white" class="bi bi-search"></i> </button>
+            <div class="input-group">
+
+                <input type="text"
+                       name="search"
+                       value="@search"
+                       class="form-control"
+                       placeholder="@_localizer[SharedResourcesKeys.DashConSearchPlaceholder]"
+                       aria-label="Search consultations" />
+
+                <select name="status"
+                        class="form-select"
+                        style="max-width: 160px;"
+                        aria-label="Filter by status">
+
+                    <option value="">
+                        @_localizer[SharedResourcesKeys.DashConAllStatuses]
+                    </option>
+
+                    @foreach (var status in Enum.GetValues<ConsultationStatus>())
+                    {
+                        <option value="@status"
+                                selected="@(selectedStatus == status.ToString())">
+                            @status
+                        </option>
+                    }
+
+                </select>
+
+                <input type="hidden"
+                       name="pageSize"
+                       value="@Model.PageSize" />
+
+                <button class="btn btn-primary"
+                        type="submit">
+
+                    <i class="bi bi-search"></i>
+
+                </button>
+
             </div>
+
         </form>
+
     </div>
 
-
-    <!-- Consultations -->
     @if (!Model.Items.Any())
     {
         <div class="alert alert-light border">
@@ -52,9 +86,9 @@
             @(string.IsNullOrWhiteSpace(search) &&
                     string.IsNullOrWhiteSpace(selectedStatus)
 
-                    ? "No consultations are available."
+                    ? _localizer[SharedResourcesKeys.DashConNoAvailable].Value
 
-                    : "No consultations found with the selected filters.")
+                    : _localizer[SharedResourcesKeys.DashConNoFound].Value)
 
     </div>
         }
@@ -70,10 +104,7 @@
 
                         <div class="card-body">
 
-                            <div class="d-flex
-                                                justify-content-between
-                                                align-items-start
-                                                mb-3">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
 
                                 <h5 class="card-title mb-0">
                                     @consultation.FullName
@@ -85,11 +116,10 @@
 
                             </div>
 
-
                             <div class="mb-2">
 
                                 <small class="text-muted">
-                                    Phone
+                                    @_localizer[SharedResourcesKeys.DashConLabelPhone]
                                 </small>
 
                                 <div>
@@ -98,14 +128,12 @@
 
                             </div>
 
-
-                            @if (!string.IsNullOrWhiteSpace(
-                                                consultation.Message))
+                            @if (!string.IsNullOrWhiteSpace(consultation.Message))
                             {
                                 <div class="mb-3">
 
                                     <small class="text-muted">
-                                        Message
+                                        @_localizer[SharedResourcesKeys.DashConLabelMessage]
                                     </small>
 
                                     <p class="mb-0">
@@ -115,7 +143,6 @@
                                 </div>
                             }
 
-
                             <div class="d-flex gap-2 mt-3">
 
                                 <a asp-action="Edit"
@@ -123,15 +150,15 @@
                                    class="btn btn-sm btn-primary">
 
                                     <i class="ti ti-edit"></i>
-                                    Edit
+
+                                    @_localizer[SharedResourcesKeys.DashEdit]
 
                                 </a>
-
 
                                 <form asp-action="Delete"
                                       asp-route-id="@consultation.Id"
                                       method="post"
-                                      onsubmit="return confirm('Are you sure you want to delete this consultation?');">
+                                      onsubmit="return confirm('@_localizer[SharedResourcesKeys.DashConDeleteConfirm]');">
 
                                     @Html.AntiForgeryToken()
 
@@ -139,7 +166,8 @@
                                             class="btn btn-sm btn-danger">
 
                                         <i class="ti ti-trash"></i>
-                                        Delete
+
+                                        @_localizer[SharedResourcesKeys.DashDelete]
 
                                     </button>
 
@@ -157,8 +185,6 @@
         </div>
     }
 
-
-    <!-- Pagination -->
     @if (totalPages > 1)
     {
         <nav class="mt-4"
@@ -177,37 +203,30 @@
                            asp-route-pageIndex="@(Model.PageIndex - 1)"
                            asp-route-pageSize="@Model.PageSize">
 
-                            Previous
+                            @_localizer[SharedResourcesKeys.Previous]
 
                         </a>
 
                     </li>
                 }
 
-
-                @for (var pageNum = 1;
-                            pageNum <= totalPages;
-                            pageNum++)
+                @for (var pageNum = 1; pageNum <= totalPages; pageNum++)
                 {
-                    <li class="page-item
-                                @(pageNum == Model.PageIndex
-                                                    ? "active"
-                                                    : "")">
+                    <li class="page-item @(pageNum == Model.PageIndex ? "active" : "")">
 
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-search="@search"
-                   asp-route-status="@selectedStatus"
-                   asp-route-pageIndex="@pageNum"
-                   asp-route-pageSize="@Model.PageSize">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-search="@search"
+                           asp-route-status="@selectedStatus"
+                           asp-route-pageIndex="@pageNum"
+                           asp-route-pageSize="@Model.PageSize">
 
                             @pageNum
 
                         </a>
 
                     </li>
-                        }
-
+                }
 
                 @if (Model.PageIndex < totalPages)
                 {
@@ -220,7 +239,7 @@
                            asp-route-pageIndex="@(Model.PageIndex + 1)"
                            asp-route-pageSize="@Model.PageSize">
 
-                            Next
+                            @_localizer[SharedResourcesKeys.Next]
 
                         </a>
 

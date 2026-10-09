@@ -1,98 +1,98 @@
-﻿@model Clinic.Application.Features.Treatments.Commands.Models.AddTreatmentCommand
+@model Clinic.web.Models.TreatmentUpsertInputModel
 
 @{
-    ViewData["Title"] = "Add Treatment";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.DashTreatCreateTitle].Value;
     Layout = "_DashboardLayout";
 }
 
 <div class="container-fluid">
 
     <div class="mb-4">
-        <h4 class="mb-1 fw-semibold">Add Treatment</h4>
-        <p class="text-muted mb-0">
-            Add a new treatment to your clinic website.
-        </p>
+        <h4 class="mb-1 fw-semibold">@_localizer[SharedResourcesKeys.DashTreatCreateTitle]</h4>
+        <p class="text-muted mb-0">@_localizer[SharedResourcesKeys.DashTreatCreateSub]</p>
     </div>
 
-    <div class="card">
-        <div class="card-body">
+    @* The form tag helper emits the antiforgery token automatically *@
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
 
-            <form asp-action="Create"
-                  method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                @Html.AntiForgeryToken()
+        <div class="row g-4">
 
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger mb-3">
+            <!-- Text content -->
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">@_localizer[SharedResourcesKeys.DashTreatLabelName]</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-0">
+                            <label asp-for="Description" class="form-label">@_localizer[SharedResourcesKeys.DashTreatLabelDesc]</label>
+                            <textarea asp-for="Description"
+                                      class="form-control long-text-field"
+                                      dir="auto"
+                                      rows="16"
+                                      data-long-text
+                                      data-max-words="3000"
+                                      data-words-label="words"
+                                      data-chars-label="characters"></textarea>
+                            <div class="form-text">
+                                Tip: separate paragraphs with a blank line. Each one appears as its own paragraph on the website,
+                                and a short first paragraph is shown as the intro under the title.
+                            </div>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                    </div>
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="Name"
-                           class="form-label">
-                        Name
-                    </label>
+            <!-- Images -->
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body">
 
-                    <input asp-for="Name"
-                           class="form-control" />
+                        <div class="mb-0">
+                            <label asp-for="Images" class="form-label">@_localizer[SharedResourcesKeys.DashTreatLabelImageUrl]</label>
+                            <input asp-for="Images"
+                                   class="form-control"
+                                   type="file"
+                                   name="Images"
+                                   accept="image/jpeg,image/png,image/webp"
+                                   multiple />
+                            <div class="form-text">
+                                Upload one or more images. The first image becomes the primary image.
+                            </div>
+                            <div id="new-image-preview" class="d-flex flex-wrap gap-2 mt-2"></div>
+                            <span asp-validation-for="Images" class="text-danger"></span>
+                        </div>
 
-                    <span asp-validation-for="Name"
-                          class="text-danger">
-                    </span>
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <label asp-for="Description"
-                           class="form-label">
-                        Description
-                    </label>
-
-                    <textarea asp-for="Description"
-                              class="form-control"
-                              rows="5"></textarea>
-
-                    <span asp-validation-for="Description"
-                          class="text-danger">
-                    </span>
-                </div>
-
-                <div class="mb-4">
-                    <label asp-for="ImageUrl"
-                           class="form-label">
-                        Image URL
-                    </label>
-
-                    <input asp-for="ImageUrl"
-                           class="form-control"
-                           placeholder="https://..." />
-
-                    <span asp-validation-for="ImageUrl"
-                          class="text-danger">
-                    </span>
-                </div>
-
-                <div class="d-flex gap-2">
-
-                    <button type="submit"
-                            class="btn btn-primary">
-                        <i class="ti ti-device-floppy"></i>
-                        Save Treatment
-                    </button>
-
-                    <a asp-action="Index"
-                       class="btn btn-light">
-                        Cancel
-                    </a>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
-    </div>
+
+        @* Always visible, so the admin does not have to scroll back up after a long text *@
+        <div class="sticky-bottom bg-white border-top py-3 mt-4">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ti ti-device-floppy"></i>
+                    @_localizer[SharedResourcesKeys.DashTreatSaveBtn]
+                </button>
+                <a asp-action="Index" class="btn btn-light">@_localizer[SharedResourcesKeys.DashCancel]</a>
+            </div>
+        </div>
+    </form>
 
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <partial name="_ImageUploadPreview" />
+    <partial name="_LongTextEditor" />
 }
-

@@ -30,30 +30,34 @@ namespace Clinic.Infrastructure.Persistence.Repositories
                        .FirstOrDefaultAsync(x => x.Id!.Equals(id));
         }
 
+        public virtual IQueryable<TEntity> ApplyFilters(
+            IQueryable<TEntity> query,
+            TEntitySC criteria)
+        {
+            query = query.WhereIf(criteria.IsDeleted.HasValue, e => e.IsDeleted == criteria.IsDeleted);
+
+            return ApplyCustomFilters(query, criteria);
+        }
+
+        public virtual IQueryable<TEntity> ApplyPaging(
+            IQueryable<TEntity> query,
+            TEntitySC criteria)
+        {
+            var skip = (criteria.NormalizedPageIndex - 1) * criteria.NormalizedPageSize;
+
+            return query.Skip(skip).Take(criteria.NormalizedPageSize);
+        }
+
         public virtual IQueryable<TEntity> GetAllBySearchCriteria(
             IQueryable<TEntity> query,
             TEntitySC criteria)
         {
-            var pageIndex = criteria.PageIndex ?? 1;
-            var pageSize = criteria.PageSize ?? 10;
-
-            //if (pageSize > criteria.MaxPageSize)
-            //    pageSize = criteria.MaxPageSize;
-
-
-            query = query.WhereIf(criteria.IsDeleted.HasValue, e => e.IsDeleted == criteria.IsDeleted);
-
-            query = ApplyCustomFilters(query, criteria);
-
-            int skip = (pageIndex - 1) * pageSize;
-            query = query.Skip(skip).Take(pageSize);
-
-            return query;
+            return ApplyPaging(ApplyFilters(query, criteria), criteria);
         }
 
         public virtual IQueryable<TEntity> ApplyCustomFilters(
-                IQueryable<TEntity> query,
-                TEntitySC criteria)
+            IQueryable<TEntity> query,
+            TEntitySC criteria)
         {
             return query;
         }

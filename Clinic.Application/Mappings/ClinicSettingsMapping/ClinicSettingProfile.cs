@@ -7,7 +7,7 @@ namespace Clinic.Application.Mappings.ClinicSettingsMapping
         public ClinicSettingProfile()
         {
             GetClinicSettingQueryMapping();
-            UpdateClinicSettingCommandMapping();
+            // UpdateClinicSettingCommandMapping removed — handler builds entity manually
         }
     }
 }

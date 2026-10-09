@@ -1,0 +1,687 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Home" xml:space="preserve">
+    <value>الرئيسية</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
+  <data name="Articles" xml:space="preserve">
+    <value>المقالات</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>تواصل معنا</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>لوحة التحكم</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="BookConsultation" xml:space="preserve">
+    <value>احجز استشارة</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>العربية</value>
+  </data>
+  <data name="FooterTagline" xml:space="preserve">
+    <value>رعاية جمالية متأنية، وخطط خدمات شخصية، وفريق مُكرَّس لثقتك بنفسك.</value>
+  </data>
+  <data name="FooterExplore" xml:space="preserve">
+    <value>استكشف</value>
+  </data>
+  <data name="FooterConsultation" xml:space="preserve">
+    <value>استشارة</value>
+  </data>
+  <data name="FooterHours" xml:space="preserve">
+    <value>الأحد–الخميس، 10ص–8م</value>
+  </data>
+  <data name="FooterRights" xml:space="preserve">
+    <value>جميع الحقوق محفوظة.</value>
+  </data>
+  <data name="FooterPhone" xml:space="preserve">
+    <value>هاتف</value>
+  </data>
+  <data name="HeroBadgeCare" xml:space="preserve">
+    <value>رعاية شخصية</value>
+  </data>
+  <data name="HeroBadgeSpecialists" xml:space="preserve">
+    <value>متخصصون موثوقون</value>
+  </data>
+  <data name="HeroHeading" xml:space="preserve">
+    <value>رعاية راقية لـ</value>
+  </data>
+  <data name="HeroHeadingHighlight" xml:space="preserve">
+    <value>ثقتك الطبيعية</value>
+  </data>
+  <data name="HeroDescription" xml:space="preserve">
+    <value>نهج هادئ ومدروس في خدمات التجميل — مع أهدافك وراحتك في قلب كل زيارة.</value>
+  </data>
+  <data name="HeroExploreServices" xml:space="preserve">
+    <value>استكشف الخدمات</value>
+  </data>
+  <data name="HeroSearchPlaceholder" xml:space="preserve">
+    <value>ابحث عن خدمات أو مقالات…</value>
+  </data>
+  <data name="EmergencyHotline" xml:space="preserve">
+    <value>خط الطوارئ</value>
+  </data>
+  <data name="AboutHeading" xml:space="preserve">
+    <value>رعاية شخصية، نتائج طبيعية</value>
+  </data>
+  <data name="AboutLead" xml:space="preserve">
+    <value>نقدم رعاية تجميلية شخصية تركز على إبراز ملامحك الطبيعية ومساعدتك على الشعور بالثقة في مظهرك.</value>
+  </data>
+  <data name="AboutBody" xml:space="preserve">
+    <value>تبدأ كل خدمة بفهم أهدافك واختيار النهج الأنسب لاحتياجاتك. من الخدمات الجمالية إلى العناية بالبشرة، نركز على التوصيات المدروسة والرعاية الاحترافية والنتائج التي تبدو طبيعية ومتوازنة.</value>
+  </data>
+  <data name="AboutStat1Number" xml:space="preserve">
+    <value>مخصصة</value>
+  </data>
+  <data name="AboutStat1Label" xml:space="preserve">
+    <value>خطط الخدمة</value>
+  </data>
+  <data name="AboutStat2Number" xml:space="preserve">
+    <value>حديثة</value>
+  </data>
+  <data name="AboutStat2Label" xml:space="preserve">
+    <value>رعاية جمالية</value>
+  </data>
+  <data name="AboutStat3Number" xml:space="preserve">
+    <value>مرتكز</value>
+  </data>
+  <data name="AboutStat3Label" xml:space="preserve">
+    <value>على المريض</value>
+  </data>
+  <data name="AboutCta" xml:space="preserve">
+    <value>تعرف علينا أكثر</value>
+  </data>
+  <data name="ServicesTitle" xml:space="preserve">
+    <value>خدماتنا</value>
+  </data>
+  <data name="ServicesSub" xml:space="preserve">
+    <value>اختر الرعاية المصممة خصيصاً لك.</value>
+  </data>
+  <data name="ServicesEmpty" xml:space="preserve">
+    <value>ستظهر الخدمات هنا قريباً.</value>
+  </data>
+  <data name="ViewAllServices" xml:space="preserve">
+    <value>عرض جميع الخدمات</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>اعرف أكثر</value>
+  </data>
+  <data name="CtaHeading" xml:space="preserve">
+    <value>اشعر بالثقة في مظهرك</value>
+  </data>
+  <data name="CtaBody" xml:space="preserve">
+    <value>اكتشف خدمات التجميل المصممة حول احتياجاتك الفردية. ابدأ باستشارة لمناقشة أهدافك واستكشاف خيارات الخدمة المناسبة لك.</value>
+  </data>
+  <data name="CtaBookBtn" xml:space="preserve">
+    <value>احجز استشارة</value>
+  </data>
+  <data name="CtaExploreBtn" xml:space="preserve">
+    <value>استكشف الخدمات</value>
+  </data>
+  <data name="CtaFeat1Title" xml:space="preserve">
+    <value>خدمات شخصية</value>
+  </data>
+  <data name="CtaFeat1Body" xml:space="preserve">
+    <value>كل خطة خدمة مصممة وفق ملامحك وأهدافك واحتياجاتك الفردية.</value>
+  </data>
+  <data name="CtaFeat2Title" xml:space="preserve">
+    <value>نتائج طبيعية المظهر</value>
+  </data>
+  <data name="CtaFeat2Body" xml:space="preserve">
+    <value>نركز على نتائج متوازنة تبرز ملامحك الطبيعية دون المساس بفردانيتك.</value>
+  </data>
+  <data name="CtaFeat3Title" xml:space="preserve">
+    <value>رعاية احترافية</value>
+  </data>
+  <data name="CtaFeat3Body" xml:space="preserve">
+    <value>من الاستشارة إلى المتابعة، نسعى إلى تقديم تجربة مريحة واحترافية في كل خطوة.</value>
+  </data>
+  <data name="CtaReadyHeading" xml:space="preserve">
+    <value>هل أنت مستعد لبدء رحلتك؟</value>
+  </data>
+  <data name="CtaReadyBody" xml:space="preserve">
+    <value>هل لديك أسئلة حول خدمة أو تريد معرفة الخيار الأنسب لك؟ تواصل مع عيادتنا وابدأ باستشارة.</value>
+  </data>
+  <data name="CtaRequestBtn" xml:space="preserve">
+    <value>طلب استشارة</value>
+  </data>
+  <data name="CtaContactLink" xml:space="preserve">
+    <value>تواصل معنا</value>
+  </data>
+  <data name="JournalTitle" xml:space="preserve">
+    <value>مجلة العيادة</value>
+  </data>
+  <data name="JournalSub" xml:space="preserve">
+    <value>إرشادات مفيدة لرحلتك مع العناية بالبشرة.</value>
+  </data>
+  <data name="JournalEmpty" xml:space="preserve">
+    <value>ستظهر المقالات هنا قريباً.</value>
+  </data>
+  <data name="ViewAllArticles" xml:space="preserve">
+    <value>عرض جميع المقالات</value>
+  </data>
+  <data name="ReadArticle" xml:space="preserve">
+    <value>اقرأ المقال</value>
+  </data>
+  <data name="ServicesPageTitle" xml:space="preserve">
+    <value>خدماتنا</value>
+  </data>
+  <data name="ServicesPageSub" xml:space="preserve">
+    <value>حلول شخصية لمساعدتك على الشعور بأفضل ما لديك.</value>
+  </data>
+  <data name="SearchServicesPlaceholder" xml:space="preserve">
+    <value>ابحث عن خدمة…</value>
+  </data>
+  <data name="ExploreService" xml:space="preserve">
+    <value>استكشف الخدمة</value>
+  </data>
+  <data name="NoServicesAvailable" xml:space="preserve">
+    <value>لا توجد خدمات متاحة حتى الآن.</value>
+  </data>
+  <data name="NoServicesFound" xml:space="preserve">
+    <value>لم يُعثر على خدمات لـ "{0}".</value>
+  </data>
+  <data name="ServiceLabel" xml:space="preserve">
+    <value>الخدمة</value>
+  </data>
+  <data name="BookConsultationBtn" xml:space="preserve">
+    <value>احجز استشارة</value>
+  </data>
+  <data name="RelatedArticlesTitle" xml:space="preserve">
+    <value>مقالات ذات صلة</value>
+  </data>
+  <data name="RelatedArticlesSub" xml:space="preserve">
+    <value>معلومات مفيدة تتعلق بـ {0}.</value>
+  </data>
+  <data name="NoRelatedArticles" xml:space="preserve">
+    <value>لا توجد مقالات ذات صلة حتى الآن.</value>
+  </data>
+  <data name="AllServices" xml:space="preserve">
+    <value>جميع الخدمات</value>
+  </data>
+  <data name="ArticlesPageTitle" xml:space="preserve">
+    <value>مجلة العيادة</value>
+  </data>
+  <data name="ArticlesPageSub" xml:space="preserve">
+    <value>رؤى مدروسة لرعاية واثقة.</value>
+  </data>
+  <data name="SearchArticlesPlaceholder" xml:space="preserve">
+    <value>ابحث عن مقال…</value>
+  </data>
+  <data name="NoArticlesAvailable" xml:space="preserve">
+    <value>لا توجد مقالات متاحة حتى الآن.</value>
+  </data>
+  <data name="NoArticlesFound" xml:space="preserve">
+    <value>لم يُعثر على مقالات لـ "{0}".</value>
+  </data>
+  <data name="ClinicJournal" xml:space="preserve">
+    <value>مجلة العيادة</value>
+  </data>
+  <data name="AllArticlesLink" xml:space="preserve">
+    <value>جميع المقالات</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>السابق</value>
+  </data>
+  <data name="ConsultationTitle" xml:space="preserve">
+    <value>احجز استشارة</value>
+  </data>
+  <data name="ConsultationLabel" xml:space="preserve">
+    <value>خطوتك الأولى</value>
+  </data>
+  <data name="ConsultationHeading" xml:space="preserve">
+    <value>احجز استشارة</value>
+  </data>
+  <data name="ConsultationSubtext" xml:space="preserve">
+    <value>أخبرنا قليلاً عن أهدافك وسيتواصل فريقنا معك لترتيب موعد مناسب.</value>
+  </data>
+  <data name="ConsultationNamePlaceholder" xml:space="preserve">
+    <value>اسمك الكامل</value>
+  </data>
+  <data name="ConsultationPhonePlaceholder" xml:space="preserve">
+    <value>+20 ...</value>
+  </data>
+  <data name="ConsultationHowHelp" xml:space="preserve">
+    <value>كيف يمكننا مساعدتك؟</value>
+  </data>
+  <data name="ConsultationMsgPlaceholder" xml:space="preserve">
+    <value>أخبرنا عن الخدمة أو المشكلة التي تودّ مناقشتها.</value>
+  </data>
+  <data name="ConsultationSendBtn" xml:space="preserve">
+    <value>إرسال طلب الاستشارة</value>
+  </data>
+  <data name="ContactTitle" xml:space="preserve">
+    <value>تواصل معنا</value>
+  </data>
+  <data name="ContactLabel" xml:space="preserve">
+    <value>يسعدنا سماعك</value>
+  </data>
+  <data name="ContactHeading" xml:space="preserve">
+    <value>تواصل مع عيادتنا</value>
+  </data>
+  <data name="ContactSubtext" xml:space="preserve">
+    <value>اطرح سؤالاً أو شارك مخاوفك أو اطلب مزيداً من المعلومات قبل زيارتك.</value>
+  </data>
+  <data name="ContactSendBtn" xml:space="preserve">
+    <value>إرسال الرسالة</value>
+  </data>
+  <data name="LoginPortalLabel" xml:space="preserve">
+    <value>بوابة الإدارة</value>
+  </data>
+  <data name="LoginWelcome" xml:space="preserve">
+    <value>مرحباً بعودتك</value>
+  </data>
+  <data name="LoginSubtext" xml:space="preserve">
+    <value>سجّل دخولك للوصول إلى لوحة التحكم وإدارة موقع عيادتك.</value>
+  </data>
+  <data name="LoginSubmitBtn" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="DashMain" xml:space="preserve">
+    <value>الرئيسي</value>
+  </data>
+  <data name="DashOverview" xml:space="preserve">
+    <value>نظرة عامة</value>
+  </data>
+  <data name="DashClinicSettings" xml:space="preserve">
+    <value>إعدادات العيادة</value>
+  </data>
+  <data name="DashSite" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="DashTreatments" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
+  <data name="DashArticles" xml:space="preserve">
+    <value>المقالات</value>
+  </data>
+  <data name="DashConsultations" xml:space="preserve">
+    <value>الاستشارات</value>
+  </data>
+  <data name="DashViewSite" xml:space="preserve">
+    <value>عرض الموقع</value>
+  </data>
+  <data name="DashPageTitle" xml:space="preserve">
+    <value>نظرة عامة على العيادة</value>
+  </data>
+  <data name="DashWelcome" xml:space="preserve">
+    <value>مرحباً بعودتك</value>
+  </data>
+  <data name="DashEditSettings" xml:space="preserve">
+    <value>تعديل الإعدادات</value>
+  </data>
+  <data name="DashNotConfigured" xml:space="preserve">
+    <value>لم يتم تكوين إعدادات العيادة بعد.</value>
+  </data>
+  <data name="DashConfigureNow" xml:space="preserve">
+    <value>قم بالتكوين الآن ←</value>
+  </data>
+  <data name="DashCardClinic" xml:space="preserve">
+    <value>العيادة</value>
+  </data>
+  <data name="DashCardDoctor" xml:space="preserve">
+    <value>الطبيب</value>
+  </data>
+  <data name="DashCardContact" xml:space="preserve">
+    <value>التواصل</value>
+  </data>
+  <data name="DashCardSocial" xml:space="preserve">
+    <value>التواصل الاجتماعي</value>
+  </data>
+  <data name="DashNoSpecialization" xml:space="preserve">
+    <value>لم يتم تحديد التخصص</value>
+  </data>
+  <data name="DashNoEmail" xml:space="preserve">
+    <value>لم يتم تحديد البريد الإلكتروني</value>
+  </data>
+  <data name="DashNoSocialLinks" xml:space="preserve">
+    <value>لا توجد روابط تواصل اجتماعي</value>
+  </data>
+  <data name="DashCardDescription" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="DashCardHeroImage" xml:space="preserve">
+    <value>صورة الغلاف</value>
+  </data>
+  <data name="DashSettingsTitle" xml:space="preserve">
+    <value>إعدادات العيادة</value>
+  </data>
+  <data name="DashSettingsSub" xml:space="preserve">
+    <value>قم بتحديث المعلومات العامة لعيادتك.</value>
+  </data>
+  <data name="DashBackOverview" xml:space="preserve">
+    <value>العودة إلى النظرة العامة</value>
+  </data>
+  <data name="DashSectionClinicInfo" xml:space="preserve">
+    <value>معلومات العيادة</value>
+  </data>
+  <data name="DashSectionContact" xml:space="preserve">
+    <value>التواصل</value>
+  </data>
+  <data name="DashSectionSocialMedia" xml:space="preserve">
+    <value>التواصل الاجتماعي والوسائط</value>
+  </data>
+  <data name="DashLabelClinicName" xml:space="preserve">
+    <value>اسم العيادة</value>
+  </data>
+  <data name="DashLabelDoctorName" xml:space="preserve">
+    <value>اسم الطبيب</value>
+  </data>
+  <data name="DashLabelSpecialization" xml:space="preserve">
+    <value>التخصص</value>
+  </data>
+  <data name="DashLabelDescription" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="DashLabelEmail" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="DashLabelWhatsApp" xml:space="preserve">
+    <value>رقم واتساب</value>
+  </data>
+  <data name="DashLabelAddress" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="DashLabelHeroImageUrl" xml:space="preserve">
+    <value>رابط صورة الغلاف</value>
+  </data>
+  <data name="DashHeroImageHint" xml:space="preserve">
+    <value>تُعرض في قسم الغلاف بالصفحة الرئيسية.</value>
+  </data>
+  <data name="DashLabelLogoUrl" xml:space="preserve">
+    <value>رابط الشعار</value>
+  </data>
+  <data name="DashLabelFacebookUrl" xml:space="preserve">
+    <value>رابط صفحة فيسبوك</value>
+  </data>
+  <data name="DashLabelInstagramUrl" xml:space="preserve">
+    <value>رابط حساب إنستغرام</value>
+  </data>
+  <data name="DashSaveChanges" xml:space="preserve">
+    <value>حفظ التغييرات</value>
+  </data>
+  <data name="DashCancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="DashTreatPageTitle" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
+  <data name="DashTreatPageSub" xml:space="preserve">
+    <value>إدارة الخدمات المعروضة على موقعك الإلكتروني.</value>
+  </data>
+  <data name="DashTreatAddBtn" xml:space="preserve">
+    <value>إضافة خدمة</value>
+  </data>
+  <data name="DashTreatSearchPlaceholder" xml:space="preserve">
+    <value>ابحث عن خدمة...</value>
+  </data>
+  <data name="DashTreatNoAvailable" xml:space="preserve">
+    <value>لا توجد خدمات متاحة.</value>
+  </data>
+  <data name="DashTreatNoFound" xml:space="preserve">
+    <value>لم يُعثر على خدمات لـ "{0}".</value>
+  </data>
+  <data name="DashTreatDeleteConfirm" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذه الخدمة؟</value>
+  </data>
+  <data name="DashTreatCreateTitle" xml:space="preserve">
+    <value>إضافة خدمة</value>
+  </data>
+  <data name="DashTreatCreateSub" xml:space="preserve">
+    <value>أضف خدمة جديدة إلى موقع عيادتك.</value>
+  </data>
+  <data name="DashTreatSaveBtn" xml:space="preserve">
+    <value>حفظ الخدمة</value>
+  </data>
+  <data name="DashTreatEditTitle" xml:space="preserve">
+    <value>تعديل الخدمة</value>
+  </data>
+  <data name="DashTreatEditSub" xml:space="preserve">
+    <value>تحديث معلومات الخدمة.</value>
+  </data>
+  <data name="DashTreatLabelName" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="DashTreatLabelDesc" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="DashTreatLabelImageUrl" xml:space="preserve">
+    <value>رابط الصورة</value>
+  </data>
+  <data name="DashArtPageTitle" xml:space="preserve">
+    <value>المقالات</value>
+  </data>
+  <data name="DashArtPageSub" xml:space="preserve">
+    <value>إدارة المقالات المعروضة على موقعك الإلكتروني.</value>
+  </data>
+  <data name="DashArtAddBtn" xml:space="preserve">
+    <value>إضافة مقال</value>
+  </data>
+  <data name="DashArtSearchPlaceholder" xml:space="preserve">
+    <value>ابحث عن مقال...</value>
+  </data>
+  <data name="DashArtNoAvailable" xml:space="preserve">
+    <value>لا توجد مقالات متاحة.</value>
+  </data>
+  <data name="DashArtNoFound" xml:space="preserve">
+    <value>لم يُعثر على مقالات لـ "{0}".</value>
+  </data>
+  <data name="DashArtDeleteConfirm" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذا المقال؟</value>
+  </data>
+  <data name="DashArtCreateTitle" xml:space="preserve">
+    <value>إضافة مقال</value>
+  </data>
+  <data name="DashArtCreateSub" xml:space="preserve">
+    <value>أضف مقالاً جديداً إلى موقع عيادتك.</value>
+  </data>
+  <data name="DashArtSaveBtn" xml:space="preserve">
+    <value>حفظ المقال</value>
+  </data>
+  <data name="DashArtEditTitle" xml:space="preserve">
+    <value>تعديل المقال</value>
+  </data>
+  <data name="DashArtEditSub" xml:space="preserve">
+    <value>تحديث معلومات المقال.</value>
+  </data>
+  <data name="DashArtLabelTitle" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="DashArtLabelSummary" xml:space="preserve">
+    <value>الملخص</value>
+  </data>
+  <data name="DashArtLabelContent" xml:space="preserve">
+    <value>المحتوى</value>
+  </data>
+  <data name="DashArtLabelImageUrl" xml:space="preserve">
+    <value>رابط الصورة المميزة</value>
+  </data>
+  <data name="DashArtLabelStatus" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="DashConPageTitle" xml:space="preserve">
+    <value>الاستشارات</value>
+  </data>
+  <data name="DashConPageSub" xml:space="preserve">
+    <value>إدارة طلبات الاستشارة من موقعك الإلكتروني.</value>
+  </data>
+  <data name="DashConSearchPlaceholder" xml:space="preserve">
+    <value>ابحث عن استشارة…</value>
+  </data>
+  <data name="DashConAllStatuses" xml:space="preserve">
+    <value>جميع الحالات</value>
+  </data>
+  <data name="DashConNoAvailable" xml:space="preserve">
+    <value>لا توجد استشارات متاحة.</value>
+  </data>
+  <data name="DashConNoFound" xml:space="preserve">
+    <value>لم يُعثر على استشارات بالفلاتر المحددة.</value>
+  </data>
+  <data name="DashConDeleteConfirm" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذه الاستشارة؟</value>
+  </data>
+  <data name="DashConLabelPhone" xml:space="preserve">
+    <value>الهاتف</value>
+  </data>
+  <data name="DashConLabelMessage" xml:space="preserve">
+    <value>الرسالة</value>
+  </data>
+  <data name="DashConEditTitle" xml:space="preserve">
+    <value>تعديل الاستشارة</value>
+  </data>
+  <data name="DashConEditSub" xml:space="preserve">
+    <value>تحديث معلومات الاستشارة وحالتها.</value>
+  </data>
+  <data name="DashConLabelFullName" xml:space="preserve">
+    <value>الاسم الكامل</value>
+  </data>
+  <data name="DashConLabelPhoneNumber" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="DashConLabelStatus" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="DashEdit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="DashDelete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="DashArtAllStatuse" xml:space="preserve">
+    <value>كل الحالات </value>
+  </data>
+</root>

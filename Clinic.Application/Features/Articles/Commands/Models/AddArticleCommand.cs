@@ -5,9 +5,17 @@ using MediatR;
 
 namespace Clinic.Application.Features.Articles.Commands.Models
 {
-    public record AddArticleCommand(string Title, string Summary,
-        string Content, string? FeaturedImageUrl, ArticleStatus Status)
-         : IRequest<Result<SingleArticleDto>>
-    { }
+    public sealed record AddArticleCommand(
+        string Title,
+        string Summary,
+        string Content,
+        ArticleStatus Status,
+        Guid? TreatmentId,
+        IReadOnlyCollection<ArticleImageUpload> Images
+    ) : IRequest<Result<UpdateCreateSingleArticleDto>>;
 
+    public sealed record ArticleImageUpload(
+        Stream FileStream,
+        string FileName
+    );
 }

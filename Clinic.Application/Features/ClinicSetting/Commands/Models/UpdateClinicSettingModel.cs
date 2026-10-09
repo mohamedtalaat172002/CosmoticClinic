@@ -4,18 +4,21 @@ using MediatR;
 
 namespace Clinic.Application.Features.ClinicSetting.Commands.Models
 {
-    public record UpdateClinicSettingModel : IRequest<Result<ClinicSettingDto>>
-    {
-        public string? ClinicName { get; init; }
-        public string DoctorName { get; init; }
-        public string? Specialization { get; init; }
-        public string? Description { get; init; }
-        public string? WhatsAppNumber { get; init; }
-        public string? Email { get; init; }
-        public string Address { get; init; }
-        public string? LogoUrl { get; init; }
-        public string? HeroImageUrl { get; init; }
-        public string? FacebookUrl { get; init; }
-        public string? InstagramUrl { get; init; }
-    }
+    public sealed record UpdateClinicSettingModel(
+        string? ClinicName,
+        string DoctorName,
+        string? Specialization,
+        string? Description,
+        string? WhatsAppNumber,
+        string? Email,
+        string Address,
+        string? FacebookUrl,
+        string? InstagramUrl,
+        IReadOnlyCollection<ClinicSettingImageUpload>? Images
+    ) : IRequest<Result<UpdateCreateClinicSettingDto>>;
+
+    public sealed record ClinicSettingImageUpload(
+        Stream FileStream,
+        string FileName
+    );
 }

@@ -6,11 +6,12 @@ using MediatR;
 namespace Clinic.Application.Features.Articles.Commands.Models
 {
     public sealed record UpdateArticleCommand(
-    Guid Id,
-    string Title,
-    string Summary,
-    string Content,
-    string? FeaturedImageUrl,
-    ArticleStatus Status
-) : IRequest<Result<SingleArticleDto>>;
+        Guid Id,
+        string Title,
+        string Summary,
+        string Content,
+        ArticleStatus Status,
+        Guid? TreatmentId,
+        IReadOnlyCollection<ArticleImageUpload>? Images
+    ) : IRequest<Result<UpdateCreateSingleArticleDto>>;
 }

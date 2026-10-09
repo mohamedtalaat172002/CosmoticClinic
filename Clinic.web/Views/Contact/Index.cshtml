@@ -1,8 +1,7 @@
-@using Clinic.Application.Features.ClinicSetting.Queries.Result
 @model ContactInputModel
 
 @{
-    ViewData["Title"] = "Contact us";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.ContactTitle].Value;
     var settings = ViewData["ClinicSettings"] as ClinicSettingDto;
     var email   = settings?.Email          ?? "hello@cosmeticclinic.com";
     var phone   = settings?.WhatsAppNumber ?? "+20 100 000 0000";
@@ -14,9 +13,9 @@
         <div class="row g-5 align-items-start">
 
             <div class="col-lg-5">
-                <p class="text-uppercase text-primary fw-bold">We would love to hear from you</p>
-                <h1>Contact our clinic</h1>
-                <p class="lead">Ask a question, share a concern, or request more information before your visit.</p>
+                <p class="text-uppercase text-primary fw-bold">@_localizer[SharedResourcesKeys.ContactLabel]</p>
+                <h1>@_localizer[SharedResourcesKeys.ContactHeading]</h1>
+                <p class="lead">@_localizer[SharedResourcesKeys.ContactSubtext]</p>
                 <div class="mt-4">
                     <p><i class="bi bi-geo-alt text-primary me-2"></i>@address</p>
                     <p><i class="bi bi-telephone text-primary me-2"></i>@phone</p>
@@ -47,7 +46,7 @@
                     </div>
 
                     <button class="btn btn-primary" type="submit">
-                        Send message <i class="bi bi-send"></i>
+                        @_localizer[SharedResourcesKeys.ContactSendBtn] <i class="bi bi-send"></i>
                     </button>
                 </form>
             </div>

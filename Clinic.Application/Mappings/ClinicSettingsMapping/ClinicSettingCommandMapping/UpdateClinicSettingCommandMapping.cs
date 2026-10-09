@@ -1,14 +1,5 @@
-﻿using AutoMapper;
-using Clinic.Application.Features.ClinicSetting.Commands.Models;
-using Clinic.Domain.Entities.clinicSettings;
-
+﻿// AutoMapper mapping removed — UpdateClinicSettingHandler builds ClinicSettings manually
+// to support image uploads (IReadOnlyCollection<ClinicSettingImageUpload> cannot be mapped via AutoMapper)
 namespace Clinic.Application.Mappings.ClinicSettingsMapping
 {
-    public partial class ClinicSettingProfile : Profile
-    {
-        public void UpdateClinicSettingCommandMapping()
-        {
-            CreateMap<UpdateClinicSettingModel, ClinicSettings>().ReverseMap();
-        }
-    }
 }

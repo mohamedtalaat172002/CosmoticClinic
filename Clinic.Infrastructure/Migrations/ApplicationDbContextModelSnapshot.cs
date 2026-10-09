@@ -22,6 +22,82 @@ namespace Clinic.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Clinic.Domain.Entities.ArticleImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId")
+                        .IsUnique()
+                        .HasFilter("[IsPrimary] = 1");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique();
+
+                    b.HasIndex("ArticleId", "DisplayOrder");
+
+                    b.ToTable("ArticleImages", (string)null);
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.ClinicSettingImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClinicSettingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicSettingId")
+                        .IsUnique()
+                        .HasFilter("[IsPrimary] = 1");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique();
+
+                    b.HasIndex("ClinicSettingId", "DisplayOrder");
+
+                    b.ToTable("ClinicSettingImages", (string)null);
+                });
+
             modelBuilder.Entity("Clinic.Domain.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -129,6 +205,44 @@ namespace Clinic.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Clinic.Domain.Entities.TreatmentImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("TreatmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique();
+
+                    b.HasIndex("TreatmentId")
+                        .IsUnique()
+                        .HasFilter("[IsPrimary] = 1");
+
+                    b.HasIndex("TreatmentId", "DisplayOrder");
+
+                    b.ToTable("TreatmentImages", (string)null);
+                });
+
             modelBuilder.Entity("Clinic.Domain.Entities.artical.Article", b =>
                 {
                     b.Property<Guid>("Id")
@@ -137,17 +251,14 @@ namespace Clinic.Infrastructure.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("FeaturedImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -199,8 +310,8 @@ namespace Clinic.Infrastructure.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
 
                     b.Property<string>("ClinicName")
                         .HasMaxLength(150)
@@ -229,20 +340,12 @@ namespace Clinic.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("HeroImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
                     b.Property<string>("InstagramUrl")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LogoUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Specialization")
                         .HasMaxLength(150)
@@ -266,11 +369,15 @@ namespace Clinic.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            Address = "Clinic Address",
-                            ClinicName = "Clinic Name",
-                            CreatedAt = new DateTime(2026, 9, 27, 22, 36, 42, 282, DateTimeKind.Utc).AddTicks(2362),
+                            Address = "Cairo, Egypt",
+                            ClinicName = "Cosmetic Clinic",
+                            CreatedAt = new DateTime(2026, 10, 9, 21, 2, 43, 901, DateTimeKind.Utc).AddTicks(4748),
+                            Description = "Welcome to our cosmetic clinic. We provide specialized cosmetic and aesthetic treatments with a focus on quality and patient care.",
                             DoctorName = "Doctor Name",
-                            IsDeleted = false
+                            Email = "info@clinic.com",
+                            IsDeleted = false,
+                            Specialization = "Cosmetic Surgery",
+                            WhatsAppNumber = "+201000000000"
                         });
                 });
 
@@ -295,8 +402,8 @@ namespace Clinic.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Message")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -331,29 +438,29 @@ namespace Clinic.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Treatments", (string)null);
                 });
@@ -507,6 +614,28 @@ namespace Clinic.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Clinic.Domain.Entities.ArticleImage", b =>
+                {
+                    b.HasOne("Clinic.Domain.Entities.artical.Article", "Article")
+                        .WithMany("Images")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.ClinicSettingImage", b =>
+                {
+                    b.HasOne("Clinic.Domain.Entities.clinicSettings.ClinicSettings", "ClinicSetting")
+                        .WithMany("Images")
+                        .HasForeignKey("ClinicSettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClinicSetting");
+                });
+
             modelBuilder.Entity("Clinic.Domain.Entities.Identity.ApplicationUser", b =>
                 {
                     b.OwnsMany("Clinic.Domain.Entities.Identity.AuthenticationHepler.RefreshToken", "refreshTokens", b1 =>
@@ -542,6 +671,17 @@ namespace Clinic.Infrastructure.Migrations
                         });
 
                     b.Navigation("refreshTokens");
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.TreatmentImage", b =>
+                {
+                    b.HasOne("Clinic.Domain.Entities.treatment.Treatment", "Treatment")
+                        .WithMany("Images")
+                        .HasForeignKey("TreatmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Treatment");
                 });
 
             modelBuilder.Entity("Clinic.Domain.Entities.artical.Article", b =>
@@ -605,9 +745,21 @@ namespace Clinic.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Clinic.Domain.Entities.artical.Article", b =>
+                {
+                    b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.clinicSettings.ClinicSettings", b =>
+                {
+                    b.Navigation("Images");
+                });
+
             modelBuilder.Entity("Clinic.Domain.Entities.treatment.Treatment", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-@using Clinic.Application.Features.ClinicSetting.Queries.Result
+@using System.Globalization
 
 @{
     var settings   = ViewData["ClinicSettings"] as ClinicSettingDto;
@@ -8,7 +8,7 @@
     var address    = settings?.Address ?? "Cairo, Egypt";
     var fbUrl      = settings?.FacebookUrl;
     var igUrl      = settings?.InstagramUrl;
-    var logoUrl    = settings?.LogoUrl;
+    
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -64,35 +64,38 @@
     <div class="branding d-flex align-items-center">
         <div class="container position-relative d-flex align-items-center justify-content-between">
 
-            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
-                @if (!string.IsNullOrWhiteSpace(logoUrl))
-                {
-                    <img src="@logoUrl" alt="@clinicName" style="max-height:40px;" />
-                }
-                else
-                {
-                    <h1 class="sitename">@clinicName</h1>
-                }
+            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">              
+                    <h1 class="sitename">@clinicName</h1>              
             </a>
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a asp-controller="Home"       asp-action="Index">Home</a></li>
-                    <li><a asp-controller="Treatments" asp-action="Index">Treatments</a></li>
-                    <li><a asp-controller="Articles"   asp-action="Index">Articles</a></li>
-                    <li><a asp-controller="Contact"    asp-action="Index">Contact</a></li>
+                        <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 px-3 py-2" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class="bi bi-globe2"></i> <span> @(CultureInfo.CurrentUICulture.Name == "ar-EG" ? "العربية" : "English") </span> </a> <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2" aria-labelledby="languageDropdown"> <li> <a class="dropdown-item d-flex align-items-center gap-2 rounded-2" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en-US" asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"> <span>🇬🇧</span> <span>English</span> @if (CultureInfo.CurrentUICulture.Name == "en-US") {
+                        <i class="bi bi-check2 ms-auto text-primary"></i>
+                                                }
+ </a> </li> <li> <a class="dropdown-item d-flex align-items-center gap-2 rounded-2" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="ar-EG" asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"> <span>🇪🇬</span> <span>العربية</span> @if (CultureInfo.CurrentUICulture.Name == "ar-EG") {
+                        <i class="bi bi-check2 ms-auto text-primary"></i>
+                                                }
+ </a> </li> </ul> </li>
+
+                    <li><a asp-controller="Home"       asp-action="Index">@_localizer[SharedResourcesKeys.Home]</a></li>
+                    <li><a asp-controller="Treatments" asp-action="Index">@_localizer[SharedResourcesKeys.Services]</a></li>
+                    <li><a asp-controller="Articles"   asp-action="Index">@_localizer[SharedResourcesKeys.Articles]</a></li>
+                    <li><a asp-controller="Contact"    asp-action="Index">@_localizer[SharedResourcesKeys.Contact]</a></li>
 
                     @if (User.IsInRole("Admin"))
                     {
                         <li>
                             <a asp-controller="Dashboard" asp-action="Index">
-                                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                                <i class="bi bi-speedometer2 me-1"></i>@_localizer[SharedResourcesKeys.Dashboard]
                             </a>
                         </li>
                         <li>
                             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline">
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="nav-link btn btn-link p-0">Sign out</button>
+                                <button type="submit" class="nav-link btn btn-link p-0">
+                                    @_localizer[SharedResourcesKeys.SignOut]
+                                </button>
                             </form>
                         </li>
                     }
@@ -101,20 +104,22 @@
                         <li>
                             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline">
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="nav-link btn btn-link p-0">Sign out</button>
+                                <button type="submit" class="nav-link btn btn-link p-0">
+                                    @_localizer[SharedResourcesKeys.SignOut]
+                                </button>
                             </form>
                         </li>
                     }
                     else
                     {
-                        <li><a asp-controller="Account" asp-action="Login">Sign in</a></li>
+                        <li><a asp-controller="Account" asp-action="Login">@_localizer[SharedResourcesKeys.SignIn]</a></li>
                     }
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
             <a class="cta-btn d-none d-sm-block" asp-controller="Consultations" asp-action="Create">
-                Book consultation
+                @_localizer[SharedResourcesKeys.BookConsultation]
             </a>
 
         </div>
@@ -142,7 +147,7 @@
                 <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
                     <span class="sitename">@clinicName</span>
                 </a>
-                <p>Thoughtful aesthetic care, personal treatment plans, and a team focused on your confidence.</p>
+                <p>@_localizer[SharedResourcesKeys.FooterTagline]</p>
                 <div class="d-flex gap-3 mt-2">
                     @if (!string.IsNullOrWhiteSpace(fbUrl))
                     {
@@ -156,22 +161,22 @@
             </div>
 
             <div class="col-lg-3 col-6">
-                <h4>Explore</h4>
+                <h4>@_localizer[SharedResourcesKeys.FooterExplore]</h4>
                 <ul>
-                    <li><a asp-controller="Treatments"    asp-action="Index">Treatments</a></li>
-                    <li><a asp-controller="Articles"      asp-action="Index">Articles</a></li>
-                    <li><a asp-controller="Consultations" asp-action="Create">Consultation</a></li>
+                    <li><a asp-controller="Treatments"    asp-action="Index">@_localizer[SharedResourcesKeys.Services]</a></li>
+                    <li><a asp-controller="Articles"      asp-action="Index">@_localizer[SharedResourcesKeys.Articles]</a></li>
+                    <li><a asp-controller="Consultations" asp-action="Create">@_localizer[SharedResourcesKeys.FooterConsultation]</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-4 col-6">
-                <h4>Contact</h4>
+                <h4>@_localizer[SharedResourcesKeys.Contact]</h4>
                 <p>
-                    Sun–Thu, 10am–8pm<br />
+                    @_localizer[SharedResourcesKeys.FooterHours]<br />
                     @address<br />
                     @if (!string.IsNullOrWhiteSpace(phone))
                     {
-                        <strong>Phone:</strong>@(" ")@phone
+                        <strong>@_localizer[SharedResourcesKeys.FooterPhone]:</strong>@(" ")@phone
                     }
                 </p>
             </div>
@@ -179,7 +184,7 @@
         </div>
     </div>
     <div class="container copyright text-center mt-4">
-        <p>© @DateTime.UtcNow.Year @clinicName. All rights reserved.</p>
+        <p>© @DateTime.UtcNow.Year @clinicName. @_localizer[SharedResourcesKeys.FooterRights]</p>
     </div>
 </footer>
 

@@ -12,15 +12,19 @@ namespace Clinic.Infrastructure.Persistence.Configurations
             builder.HasKey(t => t.Id);
 
             builder.Property(t => t.Name)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .IsRequired();
 
             builder.Property(t => t.Description)
-                .HasMaxLength(500)
+                .HasMaxLength(3000)
                 .IsRequired();
 
-            builder.Property(t => t.ImageUrl)
-                .HasMaxLength(500);
+            builder.Property(a => a.Slug)
+                .HasMaxLength(200)
+                .IsRequired();
+
+            builder.HasIndex(a => a.Slug)
+                .IsUnique();
 
 
             builder.HasMany(t => t.Articles)

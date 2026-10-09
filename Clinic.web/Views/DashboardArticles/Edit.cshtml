@@ -1,163 +1,132 @@
-﻿@model Clinic.Application.Features.Articles.Commands.Models.UpdateArticleCommand
+@model Clinic.web.Models.ArticleUpsertInputModel
 
 @{
-    ViewData["Title"] = "Edit Article";
+    ViewData["Title"] = _localizer[SharedResourcesKeys.DashArtEditTitle].Value;
     Layout = "_DashboardLayout";
 }
 
 <div class="container-fluid">
 
     <div class="mb-4">
-
-        <h4 class="mb-1 fw-semibold">
-            Edit Article
-        </h4>
-
-        <p class="text-muted mb-0">
-            Update the article information.
-        </p>
-
+        <h4 class="mb-1 fw-semibold">@_localizer[SharedResourcesKeys.DashArtEditTitle]</h4>
+        <p class="text-muted mb-0">@_localizer[SharedResourcesKeys.DashArtEditSub]</p>
     </div>
 
+    @* The form tag helper emits the antiforgery token automatically *@
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
 
-    <div class="card">
+        @* Both are required by the POST action: Id is checked against the route,
+           TreatmentId is kept so saving does not unlink the article. *@
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="TreatmentId" type="hidden" />
 
-        <div class="card-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <form asp-action="Edit"
-                  asp-route-id="@Model.Id"
-                  method="post">
+        <div class="row g-4">
 
-                @Html.AntiForgeryToken()
+            <!-- Text content -->
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body">
 
-                <input asp-for="Id"
-                       type="hidden" />
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">@_localizer[SharedResourcesKeys.DashArtLabelTitle]</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
 
+                        <div class="mb-3">
+                            <label asp-for="Summary" class="form-label">@_localizer[SharedResourcesKeys.DashArtLabelSummary]</label>
+                            <textarea asp-for="Summary" class="form-control" dir="auto" rows="4"></textarea>
+                            <span asp-validation-for="Summary" class="text-danger"></span>
+                        </div>
 
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger mb-3">
+                        <div class="mb-0">
+                            <label asp-for="Content" class="form-label">@_localizer[SharedResourcesKeys.DashArtLabelContent]</label>
+                            <textarea asp-for="Content"
+                                      class="form-control long-text-field"
+                                      dir="auto"
+                                      rows="18"
+                                      data-long-text
+                                      data-words-label="words"
+                                      data-chars-label="characters"></textarea>
+                            <div class="form-text">Tip: separate paragraphs with a blank line.</div>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+
+                    </div>
                 </div>
+            </div>
 
+            <!-- Status + images -->
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body">
 
-                <div class="mb-3">
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label">@_localizer[SharedResourcesKeys.DashArtLabelStatus]</label>
+                            <select asp-for="Status" class="form-select"
+                                    asp-items="Html.GetEnumSelectList<Clinic.Domain.Entities.artical.ArticleStatus>()"></select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
 
-                    <label asp-for="Title"
-                           class="form-label">
-                        Title
-                    </label>
+                        @if (Model.ExistingImages.Count > 0)
+                        {
+                            <div class="mb-3" id="existing-images">
+                                <label class="form-label">Current images</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var image in Model.ExistingImages)
+                                    {
+                                        <div class="position-relative">
+                                            <img src="@image.Url"
+                                                 alt=""
+                                                 class="rounded border"
+                                                 style="width: 120px; height: 90px; object-fit: cover;" />
 
-                    <input asp-for="Title"
-                           class="form-control" />
+                                            @if (image.IsPrimary)
+                                            {
+                                                <span class="badge bg-primary position-absolute top-0 start-0 m-1">Primary</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
 
-                    <span asp-validation-for="Title"
-                          class="text-danger">
-                    </span>
+                        <div class="mb-0">
+                            <label asp-for="Images" class="form-label">@_localizer[SharedResourcesKeys.DashArtLabelImageUrl]</label>
+                            <input asp-for="Images" class="form-control" type="file"
+                                   name="Images"
+                                   accept="image/jpeg,image/png,image/webp" multiple />
+                            <div class="form-text">
+                                Leave empty to keep current images. Uploading images replaces the current gallery.
+                            </div>
+                            <div id="new-image-preview" class="d-flex flex-wrap gap-2 mt-2"></div>
+                            <span asp-validation-for="Images" class="text-danger"></span>
+                        </div>
 
+                    </div>
                 </div>
-
-
-                <div class="mb-3">
-
-                    <label asp-for="Summary"
-                           class="form-label">
-                        Summary
-                    </label>
-
-                    <textarea asp-for="Summary"
-                              class="form-control"
-                              rows="4"></textarea>
-
-                    <span asp-validation-for="Summary"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <div class="mb-3">
-
-                    <label asp-for="Content"
-                           class="form-label">
-                        Content
-                    </label>
-
-                    <textarea asp-for="Content"
-                              class="form-control"
-                              rows="10"></textarea>
-
-                    <span asp-validation-for="Content"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <div class="mb-3">
-
-                    <label asp-for="FeaturedImageUrl"
-                           class="form-label">
-                        Featured Image URL
-                    </label>
-
-                    <input asp-for="FeaturedImageUrl"
-                           class="form-control" />
-
-                    <span asp-validation-for="FeaturedImageUrl"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <div class="mb-4">
-
-                    <label asp-for="Status"
-                           class="form-label">
-                        Status
-                    </label>
-
-                    <select asp-for="Status"
-                            class="form-select"
-                            asp-items="Html.GetEnumSelectList<Clinic.Domain.Entities.artical.ArticleStatus>()">
-                    </select>
-
-                    <span asp-validation-for="Status"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <div class="d-flex gap-2">
-
-                    <button type="submit"
-                            class="btn btn-primary">
-
-                        <i class="ti ti-device-floppy"></i>
-                        Save Changes
-
-                    </button>
-
-                    <a asp-action="Index"
-                       class="btn btn-light">
-
-                        Cancel
-
-                    </a>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
-    </div>
+        @* Always visible, so the admin does not have to scroll back up after a long text *@
+        <div class="sticky-bottom bg-white border-top py-3 mt-4">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ti ti-device-floppy"></i>
+                    @_localizer[SharedResourcesKeys.DashSaveChanges]
+                </button>
+                <a asp-action="Index" class="btn btn-light">@_localizer[SharedResourcesKeys.DashCancel]</a>
+            </div>
+        </div>
+    </form>
 
 </div>
 
-
 @section Scripts {
-
     <partial name="_ValidationScriptsPartial" />
-
+    <partial name="_ImageUploadPreview" />
+    <partial name="_LongTextEditor" />
 }

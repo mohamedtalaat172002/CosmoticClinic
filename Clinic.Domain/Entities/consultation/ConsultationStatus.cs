@@ -3,7 +3,7 @@
     public enum ConsultationStatus
     {
         Pending = 1,
-        Completed = 2,
-        Cancelled = 3
+        Contacted = 2,
+
     }
 }

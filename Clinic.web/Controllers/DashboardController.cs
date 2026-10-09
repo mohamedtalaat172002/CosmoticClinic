@@ -1,5 +1,6 @@
 using Clinic.Application.Features.ClinicSetting.Commands.Models;
 using Clinic.Application.Features.ClinicSetting.Queries.Models;
+using Clinic.web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,56 +10,73 @@ namespace Clinic.web.Controllers;
 [Authorize]
 public sealed class DashboardController(IMediator mediator) : Controller
 {
-    // GET /Dashboard
+
     [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetClinicSettingsQueryModel(), cancellationToken);
 
         if (!result.IsSuccess || result.Value is null)
-            return View(null);   // view handles null gracefully
+            return View(null);
 
         return View(result.Value);
     }
 
-    // GET /Dashboard/Settings
+
+
     [HttpGet]
     public async Task<IActionResult> Settings(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetClinicSettingsQueryModel(), cancellationToken);
 
         if (!result.IsSuccess || result.Value is null)
-            return View(new UpdateClinicSettingModel());
+            return View(new ClinicSettingsInputModel());
 
-        // Pre-populate the form from the current settings DTO
-        var model = new UpdateClinicSettingModel
+
+        var model = new ClinicSettingsInputModel
         {
-            ClinicName     = result.Value.ClinicName,
-            DoctorName     = result.Value.DoctorName,
+            ClinicName = result.Value.ClinicName,
+            DoctorName = result.Value.DoctorName,
             Specialization = result.Value.Specialization,
-            Description    = result.Value.Description,
+            Description = result.Value.Description,
             WhatsAppNumber = result.Value.WhatsAppNumber,
-            Email          = result.Value.Email,
-            Address        = result.Value.Address,
-            LogoUrl        = result.Value.LogoUrl,
-            HeroImageUrl   = result.Value.HeroImageUrl,
-            FacebookUrl    = result.Value.FacebookUrl,
-            InstagramUrl   = result.Value.InstagramUrl,
+            Email = result.Value.Email,
+            Address = result.Value.Address,
+            FacebookUrl = result.Value.FacebookUrl,
+            InstagramUrl = result.Value.InstagramUrl,
+            ExistingImages = result.Value.Images.ToList()
         };
 
         return View(model);
     }
 
-    // POST /Dashboard/Settings
+    // PUT /Dashboard/Settings
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Settings(
-        UpdateClinicSettingModel model,
+        ClinicSettingsInputModel model,
         CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
             return View(model);
 
-        var result = await mediator.Send(model, cancellationToken);
+        var uploads = model.Images
+            .Where(image => image.Length > 0)
+            .Select(image => new ClinicSettingImageUpload(image.OpenReadStream(), image.FileName))
+            .ToList();
+
+        var command = new UpdateClinicSettingModel(
+            model.ClinicName,
+            model.DoctorName,
+            model.Specialization,
+            model.Description,
+            model.WhatsAppNumber,
+            model.Email,
+            model.Address,
+            model.FacebookUrl,
+            model.InstagramUrl,
+            uploads);
+
+        var result = await mediator.Send(command, cancellationToken);
 
         if (result.IsSuccess)
         {

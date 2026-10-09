@@ -5,9 +5,9 @@ using MediatR;
 namespace Clinic.Application.Features.Treatments.Commands.Models
 {
     public sealed record UpdateTreatmentCommand(
-    Guid Id,
-    string Name,
-    string Description,
-    string? ImageUrl
-) : IRequest<Result<UpdateCreateSingleTreatmentDto>>;
+        Guid Id,
+        string Name,
+        string Description,
+        IReadOnlyCollection<TreatmentImageUpload>? Images
+    ) : IRequest<Result<UpdateCreateSingleTreatmentDto>>;
 }

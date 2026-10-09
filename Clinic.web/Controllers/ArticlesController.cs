@@ -1,6 +1,7 @@
 using Clinic.Application.Abstractions.Queries;
 using Clinic.Application.Features.Articles.Queries.Models;
 using Clinic.Application.Features.Articles.Queries.Result;
+using Clinic.Domain.Entities.artical;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,8 @@ public sealed class ArticlesController(IMediator mediator) : Controller
             {
                 Search = search,
                 PageIndex = pageIndex,
-                PageSize = pageSize
+                PageSize = pageSize,
+                Status = ArticleStatus.Published
             },
             cancellationToken);
 
@@ -35,6 +37,7 @@ public sealed class ArticlesController(IMediator mediator) : Controller
         string slug,
         CancellationToken cancellationToken = default)
     {
+
         var result = await mediator.Send(
             new GetArticleBySlugQuery(slug),
             cancellationToken);

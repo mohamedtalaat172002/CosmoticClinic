@@ -12,6 +12,8 @@ using Clinic.Infrastructure.Persistence.Repositories.ClinicSettingsRepo;
 using Clinic.Infrastructure.Persistence.Repositories.ConsultationRepo;
 using Clinic.Infrastructure.Persistence.Repositories.TreatmentRepo;
 using Clinic.Infrastructure.Services;
+using Clinic.Infrastructure.Services.Cloudinary;
+using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,8 +48,41 @@ namespace Clinic.Infrastructure.DependencyInjection
             services.AddScoped<IClinicSettingWriteRepository, ClinicSettingsWriteRepository>();
 
             services.AddScoped<ISlugService, SlugService>();
+
+            AddCloudinaryRegistrations(services, configuration);
+
+            services.AddScoped<IImageStorage, CloudinaryImageStorage>();
+
+
             return services;
 
+        }
+
+
+        public static IServiceCollection AddCloudinaryRegistrations(
+       this IServiceCollection services,
+       IConfiguration configuration)
+        {
+
+            services.Configure<CloudinarySettings>(
+                configuration.GetSection("CloudinarySettings"));
+
+            var cloudinarySettings =
+                configuration.GetSection("CloudinarySettings")
+                             .Get<CloudinarySettings>()
+                ?? throw new InvalidOperationException(
+                    "CloudinarySettings configuration is missing.");
+
+            var account = new Account(
+                cloudinarySettings.CloudName,
+                cloudinarySettings.ApiKey,
+                cloudinarySettings.ApiSecret);
+
+            var cloudinary = new Cloudinary(account);
+
+            services.AddSingleton(cloudinary);
+
+            return services;
         }
 
     }

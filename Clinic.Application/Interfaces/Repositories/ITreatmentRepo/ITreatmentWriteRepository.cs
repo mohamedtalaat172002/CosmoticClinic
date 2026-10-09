@@ -5,5 +5,6 @@ namespace Clinic.Application.Interfaces.Repositories.ITreatmentRepo
 {
     public interface ITreatmentWriteRepository : IGenericRepository<Treatment, Guid>
     {
+        Task<Treatment?> GetWithImagesForUpdateAsync(Guid id, CancellationToken cancellationToken);
     }
 }

@@ -25,23 +25,23 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.Configure<AuthenticationOptions>(options =>
 {
     options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultChallengeScheme    = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme       = IdentityConstants.ApplicationScheme;
-    options.DefaultSignOutScheme      = IdentityConstants.ApplicationScheme;
-    options.DefaultForbidScheme       = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultForbidScheme = IdentityConstants.ApplicationScheme;
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath         = "/Account/Login";
-    options.LogoutPath        = "/Account/Logout";
-    options.AccessDeniedPath  = "/Account/Login";
-    options.ExpireTimeSpan    = TimeSpan.FromHours(8);
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/Login";
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
     options.SlidingExpiration = true;
 });
 
 // Localization — English (default) + Arabic
-builder.Services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+builder.Services.AddLocalization(opt => { opt.ResourcesPath = ""; });
 
 var supportedCultures = new[]
 {
@@ -52,8 +52,8 @@ var supportedCultures = new[]
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     options.DefaultRequestCulture = new RequestCulture("en-US");
-    options.SupportedCultures     = supportedCultures;
-    options.SupportedUICultures   = supportedCultures;
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
     // Allow cookie-based culture persistence
     options.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
 });

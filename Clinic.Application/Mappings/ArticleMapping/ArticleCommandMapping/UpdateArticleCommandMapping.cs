@@ -1,15 +1,5 @@
-﻿using AutoMapper;
-
+﻿// AutoMapper mapping removed — UpdateArticleCommandHandler builds Article manually
+// to support image uploads (IReadOnlyCollection<ArticleImageUpload> cannot be mapped via AutoMapper)
 namespace Clinic.Application.Mappings.ArticleMapping
 {
-    public partial class ArticleProfile : Profile
-    {
-        public void UpdateArticleMapping()
-        {
-            CreateMap<
-                Clinic.Domain.Entities.artical.Article,
-                Clinic.Application.Features.Articles.Commands.Models.UpdateArticleCommand
-            >().ReverseMap();
-        }
-    }
 }
