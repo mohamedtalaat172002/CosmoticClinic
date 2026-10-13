@@ -44,6 +44,25 @@ public sealed class LoginInputModel
     public bool RememberMe { get; set; }
 }
 
+public sealed class SignUpInputModel
+{
+    [Required, MinLength(2), Display(Name = "First name")]
+    public string FirstName { get; set; } = string.Empty;
+
+    [Required, MinLength(2), Display(Name = "Last name")]
+    public string LastName { get; set; } = string.Empty;
+
+    [Required, EmailAddress]
+    public string Email { get; set; } = string.Empty;
+
+    [Required, MinLength(6), DataType(DataType.Password)]
+    public string Password { get; set; } = string.Empty;
+
+    [Required, DataType(DataType.Password), Display(Name = "Confirm password")]
+    [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
+    public string ConfirmPassword { get; set; } = string.Empty;
+}
+
 public sealed class ContactInputModel
 {
     [Required]

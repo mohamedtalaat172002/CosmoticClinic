@@ -9,6 +9,8 @@
         public const string Contact = "Contact";
         public const string Dashboard = "Dashboard";
         public const string SignIn = "SignIn";
+        public const string SignUp = "SignUp";
+        public const string Account = "Account";
         public const string SignOut = "SignOut";
         public const string BookConsultation = "BookConsultation";
         public const string English = "English";

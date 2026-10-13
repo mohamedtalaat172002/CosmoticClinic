@@ -112,7 +112,20 @@
                     }
                     else
                     {
-                        <li><a asp-controller="Account" asp-action="Login">@_localizer[SharedResourcesKeys.SignIn]</a></li>
+                        <li class="dropdown">
+                            <a href="#">
+                                <span>@_localizer[SharedResourcesKeys.Account]</span>
+                                <i class="bi bi-chevron-down toggle-dropdown"></i>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a asp-controller="Account" asp-action="Login">@_localizer[SharedResourcesKeys.SignIn]</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Account" asp-action="SignUp">@_localizer[SharedResourcesKeys.SignUp]</a>
+                                </li>
+                            </ul>
+                        </li>
                     }
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
